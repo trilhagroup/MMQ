@@ -1,0 +1,461 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		EBF948D413811F7000F09B86 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBF948D313811F7000F09B86 /* UIKit.framework */; };
+		EBF948D613811F7000F09B86 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBF948D513811F7000F09B86 /* Foundation.framework */; };
+		EBF948D813811F7000F09B86 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBF948D713811F7000F09B86 /* CoreGraphics.framework */; };
+		EBF948DE13811F7000F09B86 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = EBF948DC13811F7000F09B86 /* InfoPlist.strings */; };
+		EBF948E113811F7000F09B86 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EBF948E013811F7000F09B86 /* main.m */; };
+		EBF948E413811F7000F09B86 /* MMQAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EBF948E313811F7000F09B86 /* MMQAppDelegate.m */; };
+		EBF948E713811F7000F09B86 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = EBF948E513811F7000F09B86 /* MainWindow.xib */; };
+		EBF948EA13811F7000F09B86 /* MMQViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EBF948E913811F7000F09B86 /* MMQViewController.m */; };
+		EBF948ED13811F7000F09B86 /* MMQViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EBF948EB13811F7000F09B86 /* MMQViewController.xib */; };
+		EBF948F413811F7100F09B86 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBF948D313811F7000F09B86 /* UIKit.framework */; };
+		EBF948F513811F7100F09B86 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBF948D513811F7000F09B86 /* Foundation.framework */; };
+		EBF948F613811F7100F09B86 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBF948D713811F7000F09B86 /* CoreGraphics.framework */; };
+		EBF948FE13811F7100F09B86 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = EBF948FC13811F7100F09B86 /* InfoPlist.strings */; };
+		EBF9490113811F7100F09B86 /* MMQTests.h in Resources */ = {isa = PBXBuildFile; fileRef = EBF9490013811F7100F09B86 /* MMQTests.h */; };
+		EBF9490313811F7100F09B86 /* MMQTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EBF9490213811F7100F09B86 /* MMQTests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		EBF948F713811F7100F09B86 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EBF948C613811F7000F09B86 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = EBF948CE13811F7000F09B86;
+			remoteInfo = MMQ;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		EBF948CF13811F7000F09B86 /* MMQ.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MMQ.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		EBF948D313811F7000F09B86 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		EBF948D513811F7000F09B86 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		EBF948D713811F7000F09B86 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		EBF948DB13811F7000F09B86 /* MMQ-Info.plist */ = {isa = PBXFileReference; path = "MMQ-Info.plist"; sourceTree = "<group>"; };
+		EBF948DD13811F7000F09B86 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		EBF948DF13811F7000F09B86 /* MMQ-Prefix.pch */ = {isa = PBXFileReference; path = "MMQ-Prefix.pch"; sourceTree = "<group>"; };
+		EBF948E013811F7000F09B86 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		EBF948E213811F7000F09B86 /* MMQAppDelegate.h */ = {isa = PBXFileReference; path = MMQAppDelegate.h; sourceTree = "<group>"; };
+		EBF948E313811F7000F09B86 /* MMQAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MMQAppDelegate.m; sourceTree = "<group>"; };
+		EBF948E613811F7000F09B86 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainWindow.xib; sourceTree = "<group>"; };
+		EBF948E813811F7000F09B86 /* MMQViewController.h */ = {isa = PBXFileReference; path = MMQViewController.h; sourceTree = "<group>"; };
+		EBF948E913811F7000F09B86 /* MMQViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MMQViewController.m; sourceTree = "<group>"; };
+		EBF948EC13811F7000F09B86 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MMQViewController.xib; sourceTree = "<group>"; };
+		EBF948F313811F7100F09B86 /* MMQTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MMQTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		EBF948FB13811F7100F09B86 /* MMQTests-Info.plist */ = {isa = PBXFileReference; path = "MMQTests-Info.plist"; sourceTree = "<group>"; };
+		EBF948FD13811F7100F09B86 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		EBF948FF13811F7100F09B86 /* MMQTests-Prefix.pch */ = {isa = PBXFileReference; path = "MMQTests-Prefix.pch"; sourceTree = "<group>"; };
+		EBF9490013811F7100F09B86 /* MMQTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MMQTests.h; sourceTree = "<group>"; };
+		EBF9490213811F7100F09B86 /* MMQTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MMQTests.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		EBF948CC13811F7000F09B86 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EBF948D413811F7000F09B86 /* UIKit.framework in Frameworks */,
+				EBF948D613811F7000F09B86 /* Foundation.framework in Frameworks */,
+				EBF948D813811F7000F09B86 /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EBF948EF13811F7100F09B86 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EBF948F413811F7100F09B86 /* UIKit.framework in Frameworks */,
+				EBF948F513811F7100F09B86 /* Foundation.framework in Frameworks */,
+				EBF948F613811F7100F09B86 /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		EBF948C413811F7000F09B86 = {
+			isa = PBXGroup;
+			children = (
+				EBF948D913811F7000F09B86 /* MMQ */,
+				EBF948F913811F7100F09B86 /* MMQTests */,
+				EBF948D213811F7000F09B86 /* Frameworks */,
+				EBF948D013811F7000F09B86 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		EBF948D013811F7000F09B86 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				EBF948CF13811F7000F09B86 /* MMQ.app */,
+				EBF948F313811F7100F09B86 /* MMQTests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		EBF948D213811F7000F09B86 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				EBF948D313811F7000F09B86 /* UIKit.framework */,
+				EBF948D513811F7000F09B86 /* Foundation.framework */,
+				EBF948D713811F7000F09B86 /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		EBF948D913811F7000F09B86 /* MMQ */ = {
+			isa = PBXGroup;
+			children = (
+				EBF948E213811F7000F09B86 /* MMQAppDelegate.h */,
+				EBF948E313811F7000F09B86 /* MMQAppDelegate.m */,
+				EBF948E513811F7000F09B86 /* MainWindow.xib */,
+				EBF948E813811F7000F09B86 /* MMQViewController.h */,
+				EBF948E913811F7000F09B86 /* MMQViewController.m */,
+				EBF948EB13811F7000F09B86 /* MMQViewController.xib */,
+				EBF948DA13811F7000F09B86 /* Supporting Files */,
+			);
+			path = MMQ;
+			sourceTree = "<group>";
+		};
+		EBF948DA13811F7000F09B86 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				EBF948DB13811F7000F09B86 /* MMQ-Info.plist */,
+				EBF948DC13811F7000F09B86 /* InfoPlist.strings */,
+				EBF948DF13811F7000F09B86 /* MMQ-Prefix.pch */,
+				EBF948E013811F7000F09B86 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		EBF948F913811F7100F09B86 /* MMQTests */ = {
+			isa = PBXGroup;
+			children = (
+				EBF9490013811F7100F09B86 /* MMQTests.h */,
+				EBF9490213811F7100F09B86 /* MMQTests.m */,
+				EBF948FA13811F7100F09B86 /* Supporting Files */,
+			);
+			path = MMQTests;
+			sourceTree = "<group>";
+		};
+		EBF948FA13811F7100F09B86 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				EBF948FB13811F7100F09B86 /* MMQTests-Info.plist */,
+				EBF948FC13811F7100F09B86 /* InfoPlist.strings */,
+				EBF948FF13811F7100F09B86 /* MMQTests-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		EBF948CE13811F7000F09B86 /* MMQ */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EBF9490613811F7100F09B86 /* Build configuration list for PBXNativeTarget "MMQ" */;
+			buildPhases = (
+				EBF948CB13811F7000F09B86 /* Sources */,
+				EBF948CC13811F7000F09B86 /* Frameworks */,
+				EBF948CD13811F7000F09B86 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MMQ;
+			productName = MMQ;
+			productReference = EBF948CF13811F7000F09B86 /* MMQ.app */;
+			productType = "com.apple.product-type.application";
+		};
+		EBF948F213811F7100F09B86 /* MMQTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EBF9490913811F7100F09B86 /* Build configuration list for PBXNativeTarget "MMQTests" */;
+			buildPhases = (
+				EBF948EE13811F7100F09B86 /* Sources */,
+				EBF948EF13811F7100F09B86 /* Frameworks */,
+				EBF948F013811F7100F09B86 /* Resources */,
+				EBF948F113811F7100F09B86 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				EBF948F813811F7100F09B86 /* PBXTargetDependency */,
+			);
+			name = MMQTests;
+			productName = MMQTests;
+			productReference = EBF948F313811F7100F09B86 /* MMQTests.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		EBF948C613811F7000F09B86 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				ORGANIZATIONNAME = pedrogoes.info;
+			};
+			buildConfigurationList = EBF948C913811F7000F09B86 /* Build configuration list for PBXProject "MMQ" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = EBF948C413811F7000F09B86;
+			productRefGroup = EBF948D013811F7000F09B86 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				EBF948CE13811F7000F09B86 /* MMQ */,
+				EBF948F213811F7100F09B86 /* MMQTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		EBF948CD13811F7000F09B86 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EBF948DE13811F7000F09B86 /* InfoPlist.strings in Resources */,
+				EBF948E713811F7000F09B86 /* MainWindow.xib in Resources */,
+				EBF948ED13811F7000F09B86 /* MMQViewController.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EBF948F013811F7100F09B86 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EBF948FE13811F7100F09B86 /* InfoPlist.strings in Resources */,
+				EBF9490113811F7100F09B86 /* MMQTests.h in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		EBF948F113811F7100F09B86 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		EBF948CB13811F7000F09B86 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EBF948E113811F7000F09B86 /* main.m in Sources */,
+				EBF948E413811F7000F09B86 /* MMQAppDelegate.m in Sources */,
+				EBF948EA13811F7000F09B86 /* MMQViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EBF948EE13811F7100F09B86 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EBF9490313811F7100F09B86 /* MMQTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		EBF948F813811F7100F09B86 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = EBF948CE13811F7000F09B86 /* MMQ */;
+			targetProxy = EBF948F713811F7100F09B86 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		EBF948DC13811F7000F09B86 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				EBF948DD13811F7000F09B86 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		EBF948E513811F7000F09B86 /* MainWindow.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				EBF948E613811F7000F09B86 /* en */,
+			);
+			name = MainWindow.xib;
+			sourceTree = "<group>";
+		};
+		EBF948EB13811F7000F09B86 /* MMQViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				EBF948EC13811F7000F09B86 /* en */,
+			);
+			name = MMQViewController.xib;
+			sourceTree = "<group>";
+		};
+		EBF948FC13811F7100F09B86 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				EBF948FD13811F7100F09B86 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		EBF9490413811F7100F09B86 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		EBF9490513811F7100F09B86 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+			};
+			name = Release;
+		};
+		EBF9490713811F7100F09B86 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "MMQ/MMQ-Prefix.pch";
+				INFOPLIST_FILE = "MMQ/MMQ-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		EBF9490813811F7100F09B86 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "MMQ/MMQ-Prefix.pch";
+				INFOPLIST_FILE = "MMQ/MMQ-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				VALIDATE_PRODUCT = YES;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		EBF9490A13811F7100F09B86 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/MMQ.app/MMQ";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "MMQTests/MMQTests-Prefix.pch";
+				INFOPLIST_FILE = "MMQTests/MMQTests-Info.plist";
+				OTHER_LDFLAGS = (
+					"-framework",
+					SenTestingKit,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		EBF9490B13811F7100F09B86 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/MMQ.app/MMQ";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "MMQTests/MMQTests-Prefix.pch";
+				INFOPLIST_FILE = "MMQTests/MMQTests-Info.plist";
+				OTHER_LDFLAGS = (
+					"-framework",
+					SenTestingKit,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		EBF948C913811F7000F09B86 /* Build configuration list for PBXProject "MMQ" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EBF9490413811F7100F09B86 /* Debug */,
+				EBF9490513811F7100F09B86 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EBF9490613811F7100F09B86 /* Build configuration list for PBXNativeTarget "MMQ" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EBF9490713811F7100F09B86 /* Debug */,
+				EBF9490813811F7100F09B86 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		EBF9490913811F7100F09B86 /* Build configuration list for PBXNativeTarget "MMQTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EBF9490A13811F7100F09B86 /* Debug */,
+				EBF9490B13811F7100F09B86 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = EBF948C613811F7000F09B86 /* Project object */;
+}
