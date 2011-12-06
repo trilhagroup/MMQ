@@ -8,40 +8,24 @@
 
 #import <UIKit/UIKit.h>
 
-@interface MMQViewController : UIViewController <UITextFieldDelegate> {
-    UIButton * bCalcular;
-    UITextField * tX;
-    UITextField * tY;
-    UITextView * tResultados;
-    NSArray * valoresX;
-    NSArray * valoresY;
+@interface MMQViewController : UIViewController <UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource> {
+    IBOutlet UITableView * tTabela;
+    NSMutableArray * valoresX;
+    NSMutableArray * valoresY;
     
-    float medioX;
-    float medioY;
-    float a;
-    float deltaA;
-    float b;
-    float deltaB;
-    float deltaY;
+    float medioX, medioY, a, deltaA, b, deltaB, deltaY;
 }
 
-@property (nonatomic, retain) IBOutlet UIButton * bCalcular;
-@property (nonatomic, retain) IBOutlet UITextField * tX;
-@property (nonatomic, retain) IBOutlet UITextField * tY;
-@property (nonatomic, retain) IBOutlet UITextView * tResultados;
-@property (nonatomic, retain) NSArray * valoresX;
-@property (nonatomic, retain) NSArray * valoresY;
+@property (nonatomic, retain) NSMutableArray * valoresX;
+@property (nonatomic, retain) NSMutableArray * valoresY;
 
-@property (nonatomic, assign) float medioX;
-@property (nonatomic, assign) float medioY;
-@property (nonatomic, assign) float a;
-@property (nonatomic, assign) float deltaA;
-@property (nonatomic, assign) float b;
-@property (nonatomic, assign) float deltaB;
-@property (nonatomic, assign) float deltaY;
 
-- (IBAction) calcular;
-- (IBAction) backgroundTap: (id) sender;
-- (IBAction) infoSobre;
+- (void)salvarDados;
+- (void)carregarDados;
+- (IBAction)calcular;
+- (IBAction)adicionarPonto;
+- (IBAction)entrarModoEdicao;
+- (void)atualizarTabela;
+- (IBAction)infoSobre;
 
 @end

@@ -7,20 +7,20 @@
 //
 
 #import "MMQViewController.h"
+#import "MMQPointCell.h"
+#import "MMQPointDetailViewController.h"
+
+#define ARQUIVO_X @"x.plist"
+#define ARQUIVO_Y @"y.plist"
 
 @implementation MMQViewController
 
-@synthesize bCalcular, tX, tY, tResultados, valoresX, valoresY;
-@synthesize medioX, medioY, a, deltaA, b, deltaB, deltaY;
+@synthesize valoresX, valoresY;
 
 - (void)dealloc
 {
-    [bCalcular release];
-    [tX release];
-    [tY release];
     [valoresX release];
     [valoresY release];
-    [tResultados release];
     [super dealloc];
 }
 
@@ -32,9 +32,31 @@
     // Release any cached data, images, etc that aren't in use.
 }
 
+#pragma mark - IO Methods
+
+- (void)salvarDados {
+    [NSKeyedArchiver archiveRootObject:self.valoresX toFile:[[NSHomeDirectory() stringByAppendingPathComponent: @"Documents"] stringByAppendingPathComponent:ARQUIVO_X]];
+    [NSKeyedArchiver archiveRootObject:self.valoresY toFile:[[NSHomeDirectory() stringByAppendingPathComponent: @"Documents"] stringByAppendingPathComponent:ARQUIVO_Y]];
+}
+
+- (void)carregarDados {
+    id root = [NSKeyedUnarchiver unarchiveObjectWithFile:[[NSHomeDirectory() stringByAppendingPathComponent: @"Documents"] stringByAppendingPathComponent:ARQUIVO_X]];
+    if (root) {
+        self.valoresX = root;
+    } else {
+        self.valoresX = [NSMutableArray array];
+    }
+    
+    root = [NSKeyedUnarchiver unarchiveObjectWithFile:[[NSHomeDirectory() stringByAppendingPathComponent: @"Documents"] stringByAppendingPathComponent:ARQUIVO_Y]];
+    if (root) {
+        self.valoresY = root;
+    } else {
+        self.valoresY = [NSMutableArray array];
+    }
+}
+
+
 - (IBAction) calcular {
-    self.valoresX = [self.tX.text componentsSeparatedByString:@" "];
-    self.valoresY = [self.tY.text componentsSeparatedByString:@" "];
     
     if ([valoresX count] == [valoresY count]) {
         float soma = 0.0;
@@ -90,7 +112,16 @@
         deltaB = sqrtf(soma / ([valoresX count] * soma2)) * deltaY;
         
         NSString * mensagem = [[NSString alloc] initWithFormat:@"a = %f\nb = %f\ndeltaA = %f\ndeltaB = %f\ndeltaY = %f\n", a, b, deltaA, deltaB, deltaY];
-        self.tResultados.text = mensagem;
+        
+        UIAlertView *alert = [[UIAlertView alloc] 
+                              initWithTitle:@"Resultados" 
+                              message: mensagem
+                              delegate:self 
+                              cancelButtonTitle:@"Ok" 
+                              otherButtonTitles:nil];
+        [alert show];
+        [alert release];
+        
         [mensagem release];
     } else {
         UIAlertView *alert = [[UIAlertView alloc] 
@@ -107,16 +138,27 @@
     
 }
 
-- (IBAction) backgroundTap: (id) sender {
-    [self.tX resignFirstResponder];
-    [self.tY resignFirstResponder];
+- (IBAction) adicionarPonto {
+    // Adicionaremos valores padrão aos vetores
+    [valoresX insertObject:[[NSNumber numberWithFloat:0.0] stringValue] atIndex:0];
+    [valoresY insertObject:[[NSNumber numberWithFloat:0.0] stringValue] atIndex:0];
+    
+    [tTabela insertRowsAtIndexPaths:[NSArray arrayWithObjects:[NSIndexPath indexPathForRow:0 inSection:0], nil] withRowAnimation:UITableViewRowAnimationLeft];                                 
+}
+
+- (IBAction) entrarModoEdicao {
+    [tTabela setEditing: ![tTabela isEditing] animated:YES];
+}
+
+- (void)atualizarTabela {
+    [tTabela reloadData];
 }
 
 - (IBAction) infoSobre {
 	
 	UIAlertView *alert = [[UIAlertView alloc] 
 						  initWithTitle:@"Sobre" 
-						  message: @"Este programa calcula os valores de a e b incluindo seus erros (deltas) pelo Método dos Mínimos Quadrados.\n\nDesenvolvedor: Pedro P. M. Góes\n\nVersão atual: 1.0\nRelease: Maio/2011\n"
+						  message: @"Este programa calcula os valores de a e b incluindo seus erros (deltas) pelo Método dos Mínimos Quadrados.\n\nDesenvolvedor: Pedro P. M. Góes\n\nVersão atual: 1.1\nRelease: Novembro/2011\n"
 						  delegate:self 
 						  cancelButtonTitle:@"Ok" 
 						  otherButtonTitles:nil];
@@ -127,13 +169,21 @@
 
 #pragma mark - View lifecycle
 
-/*
+
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [self carregarDados];
 }
-*/
+
+- (void) viewWillAppear:(BOOL)animated {
+    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(adicionarPonto)] autorelease];
+    self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(entrarModoEdicao)] autorelease];
+    self.navigationItem.title = @"MMQ";
+}
+
 
 - (void)viewDidUnload
 {
@@ -155,6 +205,70 @@
     [textField resignFirstResponder];
     
     return YES;
+}
+
+#pragma mark -
+#pragma mark Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)aTableView {
+    return 1;
+}
+
+
+- (NSInteger)tableView:(UITableView *)aTableView numberOfRowsInSection:(NSInteger)section {
+    // Podemos retornar a quantidade do vetor X ou Y (que DEVEM ter o mesmo número de elementos)
+    return ([valoresX count]);
+}
+
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+	static NSString * CustomCellIdentifier = @"CustomCellIdentifier";
+    MMQPointCell * celula = (MMQPointCell *)[tableView dequeueReusableCellWithIdentifier: CustomCellIdentifier];
+    
+	if (celula == nil) {
+		NSArray * nib = [[NSBundle mainBundle] loadNibNamed:@"MMQPointCell" owner:self options:nil];
+		for (id oneObject in nib) {
+			if ([oneObject isKindOfClass:[MMQPointCell class]]) {
+				celula = (MMQPointCell *)oneObject;
+			}
+		}
+	}
+	
+	// Construindo a célula
+    celula.valorX.text = [valoresX objectAtIndex:indexPath.row];
+    celula.valorY.text = [valoresY objectAtIndex:indexPath.row];  
+    celula.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+	
+	return celula;
+}
+
+// Override to support conditional editing of the table view.
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    // Return NO if you do not want the specified item to be editable.
+    return YES;
+}
+
+- (void) tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        [valoresX removeObjectAtIndex:indexPath.row];
+        [valoresY removeObjectAtIndex:indexPath.row];
+        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath, nil] withRowAnimation:UITableViewRowAnimationRight];
+    }
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    MMQPointDetailViewController *pdvc = [[MMQPointDetailViewController alloc] initWithNibName:@"MMQPointDetailViewController" bundle:nil];
+    [self.navigationController pushViewController:pdvc animated:YES];
+    
+    pdvc.tX.text = [valoresX objectAtIndex:indexPath.row];
+    pdvc.tY.text = [valoresY objectAtIndex:indexPath.row];
+    pdvc.indexPath = indexPath;
+    pdvc.controller = self;
+    
+    [pdvc release];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 @end
