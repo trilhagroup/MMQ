@@ -55,6 +55,7 @@
     }
 }
 
+#pragma mark - User Methods
 
 - (IBAction) calcular {
     
@@ -198,17 +199,7 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
-#pragma mark -
-#pragma mark UITextField Delegate Methods
-
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    [textField resignFirstResponder];
-    
-    return YES;
-}
-
-#pragma mark -
-#pragma mark Table view data source
+#pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)aTableView {
     return 1;
@@ -242,9 +233,7 @@
 	return celula;
 }
 
-// Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
     return YES;
 }
 
@@ -255,6 +244,25 @@
         [valoresY removeObjectAtIndex:indexPath.row];
         [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath, nil] withRowAnimation:UITableViewRowAnimationRight];
     }
+}
+
+- (BOOL) tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
+    return YES;
+}
+
+- (void) tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
+    
+    // Vamos substituir os valores em ambos os vetores X e Y
+    id objeto = [[valoresX objectAtIndex:(destinationIndexPath.row)] retain];
+    [valoresX removeObjectAtIndex:(destinationIndexPath.row)];
+    [valoresX insertObject:objeto atIndex:(sourceIndexPath.row)];
+    [objeto release];
+    
+    objeto = [[valoresY objectAtIndex:(destinationIndexPath.row)] retain];
+    [valoresY removeObjectAtIndex:(destinationIndexPath.row)];
+    [valoresY insertObject:objeto atIndex:(sourceIndexPath.row)];
+    [objeto release];
+    
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -269,6 +277,14 @@
     
     [pdvc release];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+#pragma mark - UITextField Delegate Methods
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [textField resignFirstResponder];
+    
+    return YES;
 }
 
 @end

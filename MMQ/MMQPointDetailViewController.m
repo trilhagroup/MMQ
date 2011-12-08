@@ -38,6 +38,8 @@
     [super dealloc];
 }
 
+#pragma mark - User Methods
+
 - (IBAction)inverterValores {
     NSString * temp = [NSString stringWithFormat:@"%@", tX.text];
     tX.text = tY.text;
@@ -83,7 +85,7 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
-#pragma - Text Field Delegate
+#pragma mark - Text Field Delegate
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
     [UIView animateWithDuration:0.4 animations:^{
