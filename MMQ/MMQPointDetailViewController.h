@@ -15,6 +15,8 @@
     IBOutlet UITextField *tY;
     NSIndexPath *indexPath;
     MMQViewController *controller;
+    
+    id firstResponder;
 }
 
 @property (nonatomic, retain) UITextField *tX;
@@ -22,7 +24,10 @@
 @property (nonatomic, retain) NSIndexPath *indexPath;
 @property (assign) MMQViewController *controller;
 
+@property (assign) id firstResponder;
+
 - (IBAction)inverterValores;
+- (void)negativarValor;
 - (IBAction)backgroundTap;
 - (void)salvarCampos;
 

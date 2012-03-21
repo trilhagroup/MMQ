@@ -12,7 +12,7 @@
 
 @implementation MMQPointDetailViewController
 
-@synthesize tX, tY, indexPath, controller;
+@synthesize tX, tY, indexPath, controller, firstResponder;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -46,15 +46,25 @@
     tY.text = temp;
 }
 
+- (void)negativarValor{
+    NSString *nova = [((UITextField *)firstResponder).text stringByReplacingOccurrencesOfString:@"-" withString:@""];
+    
+    if ([nova isEqualToString:((UITextField *)firstResponder).text]) {
+        nova = [((UITextField *)firstResponder).text stringByReplacingCharactersInRange:NSMakeRange(0, 0) withString:@"-"];
+    }
+    
+    [((UITextField *)firstResponder) setText:nova];
+}
+
 - (IBAction)backgroundTap {
-    [tX resignFirstResponder];
-    [tY resignFirstResponder];
+    [((UITextField *)firstResponder) resignFirstResponder];
 }
 
 - (void)salvarCampos {
-    [controller.valoresX replaceObjectAtIndex:indexPath.row withObject:tX.text];
-    [controller.valoresY replaceObjectAtIndex:indexPath.row withObject:tY.text];
+    [controller.valoresX replaceObjectAtIndex:indexPath.row withObject:[tX.text stringByReplacingOccurrencesOfString:@"," withString:@"."]];
+    [controller.valoresY replaceObjectAtIndex:indexPath.row withObject:[tY.text stringByReplacingOccurrencesOfString:@"," withString:@"."]];
 }
+
 
 #pragma mark - View lifecycle
 
@@ -64,6 +74,20 @@
     // Do any additional setup after loading the view from its nib.
     tX.keyboardType = UIKeyboardTypeDecimalPad;
     tY.keyboardType = UIKeyboardTypeDecimalPad;
+    
+    UIView *inputAccessoryView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 42.0)];
+    inputAccessoryView.backgroundColor = [UIColor grayColor];
+    UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    cancelButton.frame = CGRectMake(215.0, 7.5, 100.0, 27.0);
+    [cancelButton setTitle: @"Negativo" forState:UIControlStateNormal];
+    [cancelButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [cancelButton addTarget:self action:@selector(negativarValor) forControlEvents:UIControlEventTouchUpInside];
+    [inputAccessoryView addSubview:cancelButton];
+    
+    tX.inputAccessoryView = inputAccessoryView;
+    tY.inputAccessoryView = inputAccessoryView;
+    
+    [inputAccessoryView release];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -91,6 +115,8 @@
     [UIView animateWithDuration:0.4 animations:^{
         [self.view setFrame:CGRectMake(0.0, -81.0, self.view.frame.size.width, self.view.frame.size.height)];
     }];
+    
+    firstResponder = textField;
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {

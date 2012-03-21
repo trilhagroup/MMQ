@@ -144,7 +144,9 @@
     [valoresX insertObject:[[NSNumber numberWithFloat:0.0] stringValue] atIndex:0];
     [valoresY insertObject:[[NSNumber numberWithFloat:0.0] stringValue] atIndex:0];
     
-    [tTabela insertRowsAtIndexPaths:[NSArray arrayWithObjects:[NSIndexPath indexPathForRow:0 inSection:0], nil] withRowAnimation:UITableViewRowAnimationLeft];                                 
+    [tTabela insertRowsAtIndexPaths:[NSArray arrayWithObjects:[NSIndexPath indexPathForRow:0 inSection:0], nil] withRowAnimation:UITableViewRowAnimationLeft];
+    
+    [self tableView:tTabela didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
 }
 
 - (IBAction) entrarModoEdicao {
@@ -159,7 +161,7 @@
 	
 	UIAlertView *alert = [[UIAlertView alloc] 
 						  initWithTitle:@"Sobre" 
-						  message: @"Este programa calcula os valores de a e b incluindo seus erros (deltas) pelo Método dos Mínimos Quadrados.\n\nDesenvolvedor: Pedro P. M. Góes\n\nVersão atual: 1.1\nRelease: Novembro/2011\n"
+						  message: @"Este programa calcula os valores de a e b incluindo seus erros (deltas) pelo Método dos Mínimos Quadrados.\n\nDesenvolvedor: Pedro P. M. Góes\n\nVersão atual: 1.2\nRelease: Março/2012\n\nAgora também disponível para Android!"
 						  delegate:self 
 						  cancelButtonTitle:@"Ok" 
 						  otherButtonTitles:nil];

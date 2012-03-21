@@ -9,7 +9,7 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "MMQ/MMQViewController.m"
-         timestampString = "344829864.979366"
+         timestampString = "353966705.292372"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "142"
@@ -23,11 +23,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "MMQ/MMQViewController.m"
-         timestampString = "344834281.043923"
+         timestampString = "354027908.547745"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "225"
-         endingLineNumber = "225"
+         startingLineNumber = "227"
+         endingLineNumber = "227"
          landmarkName = "-tableView:cellForRowAtIndexPath:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -37,12 +37,12 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "MMQ/MMQViewController.m"
-         timestampString = "344834281.043923"
+         timestampString = "354027908.547745"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "236"
-         endingLineNumber = "236"
-         landmarkName = "-tableView:cellForRowAtIndexPath:"
+         startingLineNumber = "238"
+         endingLineNumber = "238"
+         landmarkName = "-tableView:canEditRowAtIndexPath:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -51,13 +51,13 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "MMQ/MMQViewController.m"
-         timestampString = "344834281.043923"
+         timestampString = "354027908.547745"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "252"
-         endingLineNumber = "252"
-         landmarkName = "-tableView:commitEditingStyle:forRowAtIndexPath:"
-         landmarkType = "5">
+         startingLineNumber = "254"
+         endingLineNumber = "254"
+         landmarkName = "@implementation MMQViewController"
+         landmarkType = "3">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -65,7 +65,7 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "MMQ/MMQViewController.m"
-         timestampString = "344827304.376776"
+         timestampString = "353966705.292372"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "114"
@@ -79,7 +79,7 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "MMQ/MMQViewController.m"
-         timestampString = "344827304.376776"
+         timestampString = "353966705.292372"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "109"
@@ -93,7 +93,7 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "MMQ/MMQViewController.m"
-         timestampString = "344827304.376776"
+         timestampString = "353966705.292372"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "112"
@@ -107,12 +107,12 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "MMQ/MMQViewController.m"
-         timestampString = "344834281.043923"
+         timestampString = "354027908.547745"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "261"
-         endingLineNumber = "261"
-         landmarkName = "-tableView:didSelectRowAtIndexPath:"
+         startingLineNumber = "263"
+         endingLineNumber = "263"
+         landmarkName = "-tableView:moveRowAtIndexPath:toIndexPath:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -121,7 +121,7 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "MMQ/MMQViewController.m"
-         timestampString = "344830274.635544"
+         timestampString = "353966705.292372"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "108"
@@ -135,7 +135,7 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "MMQ/MMQViewController.m"
-         timestampString = "344830313.290732"
+         timestampString = "353966705.292372"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "104"
@@ -149,13 +149,13 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "MMQ/MMQPointDetailViewController.m"
-         timestampString = "344833228.191683"
+         timestampString = "354032088.640253"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "53"
-         endingLineNumber = "53"
-         landmarkName = "-salvarCampos"
-         landmarkType = "5">
+         startingLineNumber = "62"
+         endingLineNumber = "62"
+         landmarkName = "@implementation MMQPointDetailViewController"
+         landmarkType = "3">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -163,11 +163,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "MMQ/MMQPointDetailViewController.m"
-         timestampString = "344833228.191683"
+         timestampString = "354032088.640253"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "65"
-         endingLineNumber = "65"
+         startingLineNumber = "75"
+         endingLineNumber = "75"
          landmarkName = "-viewDidLoad"
          landmarkType = "5">
       </FileBreakpoint>
@@ -177,11 +177,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "MMQ/MMQPointDetailViewController.m"
-         timestampString = "344833228.191683"
+         timestampString = "354032184.775108"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "69"
-         endingLineNumber = "69"
+         startingLineNumber = "93"
+         endingLineNumber = "93"
          landmarkName = "-viewWillDisappear:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -210,8 +210,8 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "42"
          endingLineNumber = "42"
-         landmarkName = "-inverterValores"
-         landmarkType = "5">
+         landmarkName = "@implementation MMQPointDetailViewController"
+         landmarkType = "3">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -219,12 +219,25 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "MMQ/MMQViewController.m"
-         timestampString = "344833712.129508"
+         timestampString = "353966705.292372"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "145"
          endingLineNumber = "145"
          landmarkName = "-adicionarPonto"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "MMQ/MMQPointDetailViewController.m"
+         timestampString = "354032088.640253"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "78"
+         endingLineNumber = "78"
+         landmarkName = "-viewDidLoad"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>
