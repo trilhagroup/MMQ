@@ -231,13 +231,28 @@
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "MMQ/MMQPointDetailViewController.m"
+         isPathRelative = "0"
+         filePath = "/MMQ/MMQPointDetailViewController.m"
          timestampString = "354032088.640253"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "78"
          endingLineNumber = "78"
          landmarkName = "-viewDidLoad"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "MMQ/MMQPointDetailViewController.m"
+         timestampString = "354050555.203965"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "115"
+         endingLineNumber = "115"
+         landmarkName = "-textFieldDidBeginEditing:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

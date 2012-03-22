@@ -123,6 +123,9 @@
     [UIView animateWithDuration:0.4 animations:^{
         [self.view setFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, self.view.frame.size.height)];
     }];
+    
+    // Importante liberar textField para não provocar problemas na cadeia de eventos
+    firstResponder = nil;
 }
 
 @end
