@@ -8,10 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "CorePlot-CocoaTouch.h"
-#import "MMQViewController.h"
+@class MMQViewController;
 
 @interface MMQGraphViewController : UIViewController <CPTPlotDataSource, UIActionSheetDelegate, UISplitViewControllerDelegate> {
     IBOutlet MMQViewController *controller;
+    IBOutlet CPTGraphHostingView *graphHostingView;
     CPTXYGraph *graph;
     CPTScatterPlot *plotGraph;
     
@@ -20,8 +21,13 @@
     
     UIBarButtonItem *actionButton;
     IBOutlet UIToolbar *toolbar;
+    
+    float lengthX, lengthY;
 }
 
 @property (strong) MMQViewController *controller;
+
+
+- (void)reloadView;
 
 @end

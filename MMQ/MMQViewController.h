@@ -7,10 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MMQGraphViewController.h"
 
 
 @interface MMQViewController : UIViewController <UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource> {
     IBOutlet UITableView *tTabela;
+    IBOutlet MMQGraphViewController *graphViewController;
+    IBOutlet UIBarButtonItem *aboutButton;
+    IBOutlet UIBarButtonItem *calculateButton;
+    
     NSMutableArray *valuesX;
     NSMutableArray *valuesY;
     

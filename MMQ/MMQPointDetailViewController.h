@@ -11,16 +11,18 @@
 @class MMQViewController;
 
 @interface MMQPointDetailViewController : UIViewController <UITextFieldDelegate> {
-    IBOutlet UITextField *tX;
-    IBOutlet UITextField *tY;
+    IBOutlet UILabel *instructionLabel;
+    IBOutlet UITextField *xTextField;
+    IBOutlet UITextField *yTextField;
+    IBOutlet UIButton *invertButton;
     NSIndexPath *indexPath;
     MMQViewController *controller;
     
     id firstResponder;
 }
 
-@property (strong, nonatomic) UITextField *tX;
-@property (strong, nonatomic) UITextField *tY;
+@property (strong, nonatomic) UITextField *xTextField;
+@property (strong, nonatomic) UITextField *yTextField;
 @property (strong, nonatomic) NSIndexPath *indexPath;
 @property (strong) MMQViewController *controller;
 

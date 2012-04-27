@@ -106,7 +106,7 @@
             soma2 = soma2 + powf(([[valuesX objectAtIndex:i] floatValue] - medioX), 2.0);
         }
         deltaB = sqrtf(soma / ([valuesX count] * soma2)) * deltaY;
-        
+        /*
         NSString * mensagem = [[NSString alloc] initWithFormat:@"a = %f\nb = %f\ndeltaA = %f\ndeltaB = %f\ndeltaY = %f\n", a, b, deltaA, deltaB, deltaY];
         
         UIAlertView *alert = [[UIAlertView alloc] 
@@ -116,7 +116,7 @@
                               cancelButtonTitle:@"Ok" 
                               otherButtonTitles:nil];
         [alert show];
-        
+        */
     } else {
         UIAlertView *alert = [[UIAlertView alloc] 
                               initWithTitle:@"Ops..." 
@@ -164,10 +164,14 @@
 - (IBAction)showGraph:(id)sender {
     [self calcular];
     
-    MMQGraphViewController *mgvc = [[MMQGraphViewController alloc] initWithNibName:@"MMQGraphViewController" bundle:nil];
-    mgvc.controller = self;
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
+        MMQGraphViewController *mgvc = [[MMQGraphViewController alloc] initWithNibName:@"MMQGraphViewController" bundle:nil];
+        mgvc.controller = self;
     
-    [self.navigationController pushViewController:mgvc animated:YES];
+        [self.navigationController pushViewController:mgvc animated:YES];
+    } else {
+        [graphViewController reloadView];
+    }
 }
 
 #pragma mark - View lifecycle
@@ -179,12 +183,13 @@
     [super viewDidLoad];
     
     [self carregarDados];
-}
-
-- (void) viewWillAppear:(BOOL)animated {
+    
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(adicionarPonto)];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(entrarModoEdicao)];
-    self.navigationItem.title = @"MMQ";
+    self.navigationItem.title = NSLocalizedString(@"MMQ", nil);
+    
+    aboutButton.title = NSLocalizedString(@"About", nil);
+    calculateButton.title = NSLocalizedString(@"Calculate!", nil);
 }
 
 
@@ -269,8 +274,8 @@
     MMQPointDetailViewController *pdvc = [[MMQPointDetailViewController alloc] initWithNibName:@"MMQPointDetailViewController" bundle:nil];
     [self.navigationController pushViewController:pdvc animated:YES];
     
-    pdvc.tX.text = [valuesX objectAtIndex:indexPath.row];
-    pdvc.tY.text = [valuesY objectAtIndex:indexPath.row];
+    pdvc.xTextField.text = [valuesX objectAtIndex:indexPath.row];
+    pdvc.yTextField.text = [valuesY objectAtIndex:indexPath.row];
     pdvc.indexPath = indexPath;
     pdvc.controller = self;
     

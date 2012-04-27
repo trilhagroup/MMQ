@@ -7,6 +7,11 @@
 //
 
 #import "MMQGraphViewController.h"
+#import "MMQViewController.h"
+
+#define iPad (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+#define X_OFFSET (iPad ? 0.1 : 0.15)
+#define Y_OFFSET (iPad ? 0.1 : 0.12)
 
 @interface MMQGraphViewController ()
 
@@ -33,25 +38,17 @@
     actionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(showActionSheet:)];
     self.navigationItem.rightBarButtonItem = actionButton;
     
-    [self sortArrays];
     
+    // GRAPH code
     graph = [[CPTXYGraph alloc] initWithFrame:self.view.bounds];
     
-    CPTGraphHostingView *hostingView = (CPTGraphHostingView *)self.view;
-    hostingView.hostedGraph = graph;
+    graphHostingView.hostedGraph = graph;
     graph.paddingLeft = 20.0;
     graph.paddingTop = 20.0;
     graph.paddingTop = 20.0;
     graph.paddingBottom = 20.0;
     
-    CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *)graph.defaultPlotSpace;
-    
-    float lengthX = [self lengthFromArray:controller.valuesX];
-    float lengthY = [self lengthFromArray:controller.valuesY];
-    
-    plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat([self minValueInArray:controller.valuesX] - 0.1 * lengthX) length:CPTDecimalFromFloat(lengthX)];
-    plotSpace.yRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat([self minValueInArray:controller.valuesY] - 0.1 * lengthY) length:CPTDecimalFromFloat(lengthY)];
-
+    [self reloadView];
     
     CPTMutableLineStyle *lineStyle = [CPTLineStyle lineStyle];
     lineStyle.lineColor = [CPTColor blackColor];
@@ -59,7 +56,6 @@
     
     CPTXYAxisSet *axisSet = (CPTXYAxisSet *)graph.axisSet;
     
-    axisSet.xAxis.majorIntervalLength = [[NSNumber numberWithFloat:lengthX / 5.0f] decimalValue];
     axisSet.xAxis.minorTicksPerInterval = 4;
     axisSet.xAxis.majorTickLineStyle = lineStyle;
     axisSet.xAxis.minorTickLineStyle = lineStyle;
@@ -68,7 +64,6 @@
     axisSet.xAxis.majorTickLength = 7.0f;
     axisSet.xAxis.labelOffset = 3.0f;
     
-    axisSet.yAxis.majorIntervalLength = [[NSNumber numberWithFloat:lengthY / 5.0f] decimalValue];
     axisSet.yAxis.minorTicksPerInterval = 4;
     axisSet.yAxis.majorTickLineStyle = lineStyle;
     axisSet.yAxis.minorTickLineStyle = lineStyle;
@@ -78,15 +73,15 @@
     axisSet.yAxis.labelOffset = 3.0f;
     
     plotGraph = [[CPTScatterPlot alloc] initWithFrame:graph.defaultPlotSpace.graph.bounds];
-    plotGraph.identifier = @"X Inverse Plot";
-    ((CPTMutableLineStyle *)plotGraph.dataLineStyle).lineWidth = 1.0f;
+    plotGraph.identifier = @"Normalized Graph";
+    ((CPTMutableLineStyle *)plotGraph.dataLineStyle).lineWidth = 2.0f;
     ((CPTMutableLineStyle *)plotGraph.dataLineStyle).lineColor = [CPTColor redColor];
     plotGraph.dataSource = self;
     [graph addPlot:plotGraph];
     
     CPTScatterPlot *plotPoint = [[CPTScatterPlot alloc] initWithFrame:graph.defaultPlotSpace.graph.bounds];
-    plotPoint.identifier = @"X Inverse Plot";
-    ((CPTMutableLineStyle *)plotPoint.dataLineStyle).lineWidth = 1.0f;
+    plotPoint.identifier = @"Point Graph";
+    ((CPTMutableLineStyle *)plotPoint.dataLineStyle).lineWidth = 2.0f;
     ((CPTMutableLineStyle *)plotPoint.dataLineStyle).lineColor = [CPTColor blackColor];
     plotPoint.dataSource = self;
     [graph addPlot:plotPoint];
@@ -105,8 +100,34 @@
     return (YES);
 }
 
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+    
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
+        
+    } else {
+        if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
+            [graphHostingView setFrame:CGRectMake(graphHostingView.frame.origin.x, 0.0, graphHostingView.frame.size.width, 1004.0)];
+        } else {
+            [graphHostingView setFrame:CGRectMake(graphHostingView.frame.origin.x, 44.0, graphHostingView.frame.size.width, 704.0)];
+        }
+    }
+}
+
 - (void)reloadView {
-    [graph setNeedsDisplay];
+    
+    [self sortArrays];
+    lengthX = [self lengthFromArray:controller.valuesX];
+    lengthY = [self lengthFromArray:controller.valuesY];
+    
+    CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *)graph.defaultPlotSpace;
+    plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat([self minValueInArray:controller.valuesX] - X_OFFSET * lengthX) length:CPTDecimalFromFloat(lengthX * 1.2)];
+    plotSpace.yRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat([self minValueInArray:controller.valuesY] - Y_OFFSET * lengthY) length:CPTDecimalFromFloat(lengthY * 1.2)];
+    
+    CPTXYAxisSet *axisSet = (CPTXYAxisSet *)graph.axisSet;
+    axisSet.xAxis.majorIntervalLength = [[NSNumber numberWithFloat:lengthX / 5.0f] decimalValue];
+    axisSet.yAxis.majorIntervalLength = [[NSNumber numberWithFloat:lengthY / 5.0f] decimalValue];
+    
+    [graph reloadData];
 }
 
 NSInteger intSort(id num1, id num2, void *context) {
@@ -148,7 +169,7 @@ NSInteger intSort(id num1, id num2, void *context) {
 }
 
 - (float)lengthFromArray:(NSMutableArray *)arr  {
-    return ([self maxValueInArray:arr] - [self minValueInArray:arr]);
+    return (MAX(0, [self maxValueInArray:arr]) - [self minValueInArray:arr]);
 }
 
 - (IBAction)showActionSheet:(id)sender {
@@ -170,12 +191,13 @@ NSInteger intSort(id num1, id num2, void *context) {
     if (fieldEnum == CPTScatterPlotFieldX) {
         return [NSNumber numberWithFloat:[[sortedValuesX objectAtIndex:index] floatValue]];
     } else {
-        if (plot == plotGraph) {
-            NSLog(@"%f yeah", ([[sortedValuesX objectAtIndex:index] floatValue] * controller.a + controller.b));
+        if (plot == plotGraph) { // Rect normalized
+            NSLog(@"%f Y", [[sortedValuesX objectAtIndex:index] floatValue] * controller.a + controller.b);
             return [NSNumber numberWithFloat:([[sortedValuesX objectAtIndex:index] floatValue] * controller.a + controller.b)];
-        } else {
-            NSLog(@"%f", [[sortedValuesY objectAtIndex:index] floatValue]);
-            return [NSNumber numberWithFloat:[[sortedValuesY objectAtIndex:index] floatValue]];
+        } else { // Multiple points
+            NSInteger indexY = [controller.valuesX indexOfObject: [sortedValuesX objectAtIndex:index]];
+            //NSLog(@"%f", [[sortedValuesY objectAtIndex:index] floatValue]);
+            return [NSNumber numberWithFloat:[[controller.valuesY objectAtIndex:indexY] floatValue]];
         }
     }
 }

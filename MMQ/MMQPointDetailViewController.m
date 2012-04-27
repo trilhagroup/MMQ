@@ -12,7 +12,7 @@
 
 @implementation MMQPointDetailViewController
 
-@synthesize tX, tY, indexPath, controller, firstResponder;
+@synthesize xTextField, yTextField, indexPath, controller, firstResponder;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -35,9 +35,9 @@
 #pragma mark - User Methods
 
 - (IBAction)inverterValores {
-    NSString * temp = [NSString stringWithFormat:@"%@", tX.text];
-    tX.text = tY.text;
-    tY.text = temp;
+    NSString * temp = [NSString stringWithFormat:@"%@", xTextField.text];
+    xTextField.text = yTextField.text;
+    yTextField.text = temp;
 }
 
 - (void)negativarValor{
@@ -55,8 +55,8 @@
 }
 
 - (void)salvarCampos {
-    [controller.valuesX replaceObjectAtIndex:indexPath.row withObject:[tX.text stringByReplacingOccurrencesOfString:@"," withString:@"."]];
-    [controller.valuesY replaceObjectAtIndex:indexPath.row withObject:[tY.text stringByReplacingOccurrencesOfString:@"," withString:@"."]];
+    [controller.valuesX replaceObjectAtIndex:indexPath.row withObject:[xTextField.text stringByReplacingOccurrencesOfString:@"," withString:@"."]];
+    [controller.valuesY replaceObjectAtIndex:indexPath.row withObject:[yTextField.text stringByReplacingOccurrencesOfString:@"," withString:@"."]];
 }
 
 
@@ -66,21 +66,31 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    tX.keyboardType = UIKeyboardTypeDecimalPad;
-    tY.keyboardType = UIKeyboardTypeDecimalPad;
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
+        
+        // Do add a negative option
+        UIView *inputAccessoryView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.superview.frame.size.width, 42.0)];
+        inputAccessoryView.backgroundColor = [UIColor grayColor];
+        UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        cancelButton.frame = CGRectMake(215.0, 7.5, 100.0, 27.0);
+        [cancelButton setTitle: NSLocalizedString(@"Negative", nil) forState:UIControlStateNormal];
+        [cancelButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [cancelButton addTarget:self action:@selector(negativarValor) forControlEvents:UIControlEventTouchUpInside];
+        [inputAccessoryView addSubview:cancelButton];
+        
+        xTextField.inputAccessoryView = inputAccessoryView;
+        yTextField.inputAccessoryView = inputAccessoryView;
+        
+        
+        xTextField.keyboardType = UIKeyboardTypeDecimalPad;
+        yTextField.keyboardType = UIKeyboardTypeDecimalPad;
+    } else {
+        xTextField.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
+        yTextField.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
+    }
     
-    UIView *inputAccessoryView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 42.0)];
-    inputAccessoryView.backgroundColor = [UIColor grayColor];
-    UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    cancelButton.frame = CGRectMake(215.0, 7.5, 100.0, 27.0);
-    [cancelButton setTitle: @"Negativo" forState:UIControlStateNormal];
-    [cancelButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [cancelButton addTarget:self action:@selector(negativarValor) forControlEvents:UIControlEventTouchUpInside];
-    [inputAccessoryView addSubview:cancelButton];
-    
-    tX.inputAccessoryView = inputAccessoryView;
-    tY.inputAccessoryView = inputAccessoryView;
-    
+    [instructionLabel setText:NSLocalizedString(@"Define X and Y values of the point:", @"Defina os valores X e Y do ponto:")];
+    [invertButton setTitle:NSLocalizedString(@"Invert Values", @"Inverter Valores") forState:UIControlStateNormal];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
