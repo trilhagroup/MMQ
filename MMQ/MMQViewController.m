@@ -9,20 +9,15 @@
 #import "MMQViewController.h"
 #import "MMQPointCell.h"
 #import "MMQPointDetailViewController.h"
+#import "MMQGraphViewController.h"
 
 #define ARQUIVO_X @"x.plist"
 #define ARQUIVO_Y @"y.plist"
 
 @implementation MMQViewController
 
-@synthesize valoresX, valoresY;
+@synthesize valuesX, valuesY, a, b;
 
-- (void)dealloc
-{
-    [valoresX release];
-    [valoresY release];
-    [super dealloc];
-}
 
 - (void)didReceiveMemoryWarning
 {
@@ -35,23 +30,23 @@
 #pragma mark - IO Methods
 
 - (void)salvarDados {
-    [NSKeyedArchiver archiveRootObject:self.valoresX toFile:[[NSHomeDirectory() stringByAppendingPathComponent: @"Documents"] stringByAppendingPathComponent:ARQUIVO_X]];
-    [NSKeyedArchiver archiveRootObject:self.valoresY toFile:[[NSHomeDirectory() stringByAppendingPathComponent: @"Documents"] stringByAppendingPathComponent:ARQUIVO_Y]];
+    [NSKeyedArchiver archiveRootObject:self.valuesX toFile:[[NSHomeDirectory() stringByAppendingPathComponent: @"Documents"] stringByAppendingPathComponent:ARQUIVO_X]];
+    [NSKeyedArchiver archiveRootObject:self.valuesY toFile:[[NSHomeDirectory() stringByAppendingPathComponent: @"Documents"] stringByAppendingPathComponent:ARQUIVO_Y]];
 }
 
 - (void)carregarDados {
     id root = [NSKeyedUnarchiver unarchiveObjectWithFile:[[NSHomeDirectory() stringByAppendingPathComponent: @"Documents"] stringByAppendingPathComponent:ARQUIVO_X]];
     if (root) {
-        self.valoresX = root;
+        self.valuesX = root;
     } else {
-        self.valoresX = [NSMutableArray array];
+        self.valuesX = [NSMutableArray array];
     }
     
     root = [NSKeyedUnarchiver unarchiveObjectWithFile:[[NSHomeDirectory() stringByAppendingPathComponent: @"Documents"] stringByAppendingPathComponent:ARQUIVO_Y]];
     if (root) {
-        self.valoresY = root;
+        self.valuesY = root;
     } else {
-        self.valoresY = [NSMutableArray array];
+        self.valuesY = [NSMutableArray array];
     }
 }
 
@@ -59,30 +54,30 @@
 
 - (IBAction) calcular {
     
-    if ([valoresX count] == [valoresY count]) {
+    if ([valuesX count] == [valuesY count]) {
         float soma = 0.0;
         float soma2 = 0.0;
         
         // Cálculo do médio x
         soma = 0.0;
-        for (int i=0; i<[valoresX count]; i++) {
-            soma = soma + [[valoresX objectAtIndex:i] floatValue];
+        for (int i=0; i<[valuesX count]; i++) {
+            soma = soma + [[valuesX objectAtIndex:i] floatValue];
         }
-        medioX = soma / [valoresX count];
+        medioX = soma / [valuesX count];
         
         // Cálculo do médio y
         soma = 0.0;
-        for (int i=0; i<[valoresY count]; i++) {
-            soma = soma + [[valoresY objectAtIndex:i] floatValue];
+        for (int i=0; i<[valuesY count]; i++) {
+            soma = soma + [[valuesY objectAtIndex:i] floatValue];
         }
-        medioY = soma / [valoresY count];
+        medioY = soma / [valuesY count];
         
         // Cálculo de a
         soma = 0.0;
         soma2 = 0.0;
-        for (int i=0; i<[valoresX count]; i++) {
-            soma = soma + (([[valoresX objectAtIndex:i] floatValue] - medioX) * [[valoresY objectAtIndex:i] floatValue]);
-            soma2 = soma2 + powf(([[valoresX objectAtIndex:i] floatValue] - medioX), 2.0);
+        for (int i=0; i<[valuesX count]; i++) {
+            soma = soma + (([[valuesX objectAtIndex:i] floatValue] - medioX) * [[valuesY objectAtIndex:i] floatValue]);
+            soma2 = soma2 + powf(([[valuesX objectAtIndex:i] floatValue] - medioX), 2.0);
         }
         a = soma / soma2;
         
@@ -91,26 +86,26 @@
         
         // Cálculo de deltaY
         soma = 0.0;
-        for (int i=0; i<[valoresX count]; i++) {
-            soma = soma + powf(((a*[[valoresX objectAtIndex:i] floatValue]) + b - [[valoresY objectAtIndex:i] floatValue]), 2.0);
+        for (int i=0; i<[valuesX count]; i++) {
+            soma = soma + powf(((a*[[valuesX objectAtIndex:i] floatValue]) + b - [[valuesY objectAtIndex:i] floatValue]), 2.0);
         }
-        deltaY = sqrtf(soma / ([valoresX count] - 2));
+        deltaY = sqrtf(soma / ([valuesX count] - 2));
         
         // Cálculo de deltaA
         soma2 = 0.0;
-        for (int i=0; i<[valoresX count]; i++) {
-            soma2 = soma2 + powf(([[valoresX objectAtIndex:i] floatValue] - medioX), 2.0);
+        for (int i=0; i<[valuesX count]; i++) {
+            soma2 = soma2 + powf(([[valuesX objectAtIndex:i] floatValue] - medioX), 2.0);
         }
         deltaA = deltaY / sqrtf(soma2);
         
         // Cálculo de deltaB
         soma = 0.0;
         soma2 = 0.0;
-        for (int i=0; i<[valoresX count]; i++) {
-            soma = soma + powf([[valoresX objectAtIndex:i] floatValue], 2.0);
-            soma2 = soma2 + powf(([[valoresX objectAtIndex:i] floatValue] - medioX), 2.0);
+        for (int i=0; i<[valuesX count]; i++) {
+            soma = soma + powf([[valuesX objectAtIndex:i] floatValue], 2.0);
+            soma2 = soma2 + powf(([[valuesX objectAtIndex:i] floatValue] - medioX), 2.0);
         }
-        deltaB = sqrtf(soma / ([valoresX count] * soma2)) * deltaY;
+        deltaB = sqrtf(soma / ([valuesX count] * soma2)) * deltaY;
         
         NSString * mensagem = [[NSString alloc] initWithFormat:@"a = %f\nb = %f\ndeltaA = %f\ndeltaB = %f\ndeltaY = %f\n", a, b, deltaA, deltaB, deltaY];
         
@@ -121,9 +116,7 @@
                               cancelButtonTitle:@"Ok" 
                               otherButtonTitles:nil];
         [alert show];
-        [alert release];
         
-        [mensagem release];
     } else {
         UIAlertView *alert = [[UIAlertView alloc] 
                               initWithTitle:@"Ops..." 
@@ -132,7 +125,6 @@
                               cancelButtonTitle:@"Ok" 
                               otherButtonTitles:nil];
         [alert show];
-        [alert release];
     }
     
 
@@ -141,8 +133,8 @@
 
 - (IBAction) adicionarPonto {
     // Adicionaremos valores padrão aos vetores
-    [valoresX insertObject:[[NSNumber numberWithFloat:0.0] stringValue] atIndex:0];
-    [valoresY insertObject:[[NSNumber numberWithFloat:0.0] stringValue] atIndex:0];
+    [valuesX insertObject:[[NSNumber numberWithFloat:0.0] stringValue] atIndex:0];
+    [valuesY insertObject:[[NSNumber numberWithFloat:0.0] stringValue] atIndex:0];
     
     [tTabela insertRowsAtIndexPaths:[NSArray arrayWithObjects:[NSIndexPath indexPathForRow:0 inSection:0], nil] withRowAnimation:UITableViewRowAnimationLeft];
     
@@ -166,8 +158,16 @@
 						  cancelButtonTitle:@"Ok" 
 						  otherButtonTitles:nil];
 	[alert show];
-	[alert release];
 	
+}
+
+- (IBAction)showGraph:(id)sender {
+    [self calcular];
+    
+    MMQGraphViewController *mgvc = [[MMQGraphViewController alloc] initWithNibName:@"MMQGraphViewController" bundle:nil];
+    mgvc.controller = self;
+    
+    [self.navigationController pushViewController:mgvc animated:YES];
 }
 
 #pragma mark - View lifecycle
@@ -182,8 +182,8 @@
 }
 
 - (void) viewWillAppear:(BOOL)animated {
-    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(adicionarPonto)] autorelease];
-    self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(entrarModoEdicao)] autorelease];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(adicionarPonto)];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(entrarModoEdicao)];
     self.navigationItem.title = @"MMQ";
 }
 
@@ -197,8 +197,7 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    return YES;
 }
 
 #pragma mark - Table view data source
@@ -210,7 +209,7 @@
 
 - (NSInteger)tableView:(UITableView *)aTableView numberOfRowsInSection:(NSInteger)section {
     // Podemos retornar a quantidade do vetor X ou Y (que DEVEM ter o mesmo número de elementos)
-    return ([valoresX count]);
+    return ([valuesX count]);
 }
 
 
@@ -228,8 +227,8 @@
 	}
 	
 	// Construindo a célula
-    celula.valorX.text = [valoresX objectAtIndex:indexPath.row];
-    celula.valorY.text = [valoresY objectAtIndex:indexPath.row];  
+    celula.valorX.text = [valuesX objectAtIndex:indexPath.row];
+    celula.valorY.text = [valuesY objectAtIndex:indexPath.row];  
     celula.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	
 	return celula;
@@ -242,8 +241,8 @@
 - (void) tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        [valoresX removeObjectAtIndex:indexPath.row];
-        [valoresY removeObjectAtIndex:indexPath.row];
+        [valuesX removeObjectAtIndex:indexPath.row];
+        [valuesY removeObjectAtIndex:indexPath.row];
         [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath, nil] withRowAnimation:UITableViewRowAnimationRight];
     }
 }
@@ -255,15 +254,13 @@
 - (void) tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
     
     // Vamos substituir os valores em ambos os vetores X e Y
-    id objeto = [[valoresX objectAtIndex:(destinationIndexPath.row)] retain];
-    [valoresX removeObjectAtIndex:(destinationIndexPath.row)];
-    [valoresX insertObject:objeto atIndex:(sourceIndexPath.row)];
-    [objeto release];
+    id objeto = [valuesX objectAtIndex:(destinationIndexPath.row)];
+    [valuesX removeObjectAtIndex:(destinationIndexPath.row)];
+    [valuesX insertObject:objeto atIndex:(sourceIndexPath.row)];
     
-    objeto = [[valoresY objectAtIndex:(destinationIndexPath.row)] retain];
-    [valoresY removeObjectAtIndex:(destinationIndexPath.row)];
-    [valoresY insertObject:objeto atIndex:(sourceIndexPath.row)];
-    [objeto release];
+    objeto = [valuesY objectAtIndex:(destinationIndexPath.row)];
+    [valuesY removeObjectAtIndex:(destinationIndexPath.row)];
+    [valuesY insertObject:objeto atIndex:(sourceIndexPath.row)];
     
 }
 
@@ -272,12 +269,11 @@
     MMQPointDetailViewController *pdvc = [[MMQPointDetailViewController alloc] initWithNibName:@"MMQPointDetailViewController" bundle:nil];
     [self.navigationController pushViewController:pdvc animated:YES];
     
-    pdvc.tX.text = [valoresX objectAtIndex:indexPath.row];
-    pdvc.tY.text = [valoresY objectAtIndex:indexPath.row];
+    pdvc.tX.text = [valuesX objectAtIndex:indexPath.row];
+    pdvc.tY.text = [valuesY objectAtIndex:indexPath.row];
     pdvc.indexPath = indexPath;
     pdvc.controller = self;
     
-    [pdvc release];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 

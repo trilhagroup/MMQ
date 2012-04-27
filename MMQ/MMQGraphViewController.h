@@ -7,7 +7,21 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CorePlot-CocoaTouch.h"
+#import "MMQViewController.h"
 
-@interface MMQGraphViewController : UIViewController
+@interface MMQGraphViewController : UIViewController <CPTPlotDataSource, UIActionSheetDelegate, UISplitViewControllerDelegate> {
+    IBOutlet MMQViewController *controller;
+    CPTXYGraph *graph;
+    CPTScatterPlot *plotGraph;
+    
+    NSArray *sortedValuesX;
+    NSArray *sortedValuesY;
+    
+    UIBarButtonItem *actionButton;
+    IBOutlet UIToolbar *toolbar;
+}
+
+@property (strong) MMQViewController *controller;
 
 @end

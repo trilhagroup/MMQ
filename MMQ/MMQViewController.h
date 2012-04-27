@@ -8,21 +8,24 @@
 
 #import <UIKit/UIKit.h>
 
+
 @interface MMQViewController : UIViewController <UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource> {
-    IBOutlet UITableView * tTabela;
-    NSMutableArray * valoresX;
-    NSMutableArray * valoresY;
+    IBOutlet UITableView *tTabela;
+    NSMutableArray *valuesX;
+    NSMutableArray *valuesY;
     
     float medioX, medioY, a, deltaA, b, deltaB, deltaY;
 }
 
-@property (nonatomic, retain) NSMutableArray * valoresX;
-@property (nonatomic, retain) NSMutableArray * valoresY;
-
+@property (strong, nonatomic) NSMutableArray *valuesX;
+@property (strong, nonatomic) NSMutableArray *valuesY;
+@property (assign, nonatomic) float a;
+@property (assign, nonatomic) float b;
 
 - (void)salvarDados;
 - (void)carregarDados;
 - (IBAction)calcular;
+- (IBAction)showGraph:(id)sender;
 - (IBAction)adicionarPonto;
 - (IBAction)entrarModoEdicao;
 - (void)atualizarTabela;

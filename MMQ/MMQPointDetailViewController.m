@@ -31,12 +31,6 @@
     // Release any cached data, images, etc that aren't in use.
 }
 
-- (void)dealloc {
-    [tX release];
-    [tY release];
-    [indexPath release];
-    [super dealloc];
-}
 
 #pragma mark - User Methods
 
@@ -61,8 +55,8 @@
 }
 
 - (void)salvarCampos {
-    [controller.valoresX replaceObjectAtIndex:indexPath.row withObject:[tX.text stringByReplacingOccurrencesOfString:@"," withString:@"."]];
-    [controller.valoresY replaceObjectAtIndex:indexPath.row withObject:[tY.text stringByReplacingOccurrencesOfString:@"," withString:@"."]];
+    [controller.valuesX replaceObjectAtIndex:indexPath.row withObject:[tX.text stringByReplacingOccurrencesOfString:@"," withString:@"."]];
+    [controller.valuesY replaceObjectAtIndex:indexPath.row withObject:[tY.text stringByReplacingOccurrencesOfString:@"," withString:@"."]];
 }
 
 
@@ -87,7 +81,6 @@
     tX.inputAccessoryView = inputAccessoryView;
     tY.inputAccessoryView = inputAccessoryView;
     
-    [inputAccessoryView release];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

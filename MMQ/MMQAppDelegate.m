@@ -14,15 +14,22 @@
 
 
 @synthesize window=_window;
-
 @synthesize navigationController = _navigationController;
+@synthesize splitViewController = _splitViewController;
+@synthesize viewController = _viewController;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
-     
-    self.window.rootViewController = self.navigationController;
-    [self.window makeKeyAndVisible];
+    
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
+        [_window addSubview:_navigationController.view];
+        [_window makeKeyAndVisible];
+    } else {
+        [_window addSubview:_splitViewController.view];
+        [_window makeKeyAndVisible];
+    }
+
     return YES;
 }
 
@@ -40,6 +47,8 @@
      Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
      If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
      */
+    
+    [self.viewController salvarDados];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
@@ -63,13 +72,9 @@
      Save data if appropriate.
      See also applicationDidEnterBackground:.
      */
+    
+    [self.viewController salvarDados];
 }
 
-- (void)dealloc
-{
-    [_window release];
-    [_navigationController release];
-    [super dealloc];
-}
 
 @end

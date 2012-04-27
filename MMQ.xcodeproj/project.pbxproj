@@ -8,45 +8,59 @@
 
 /* Begin PBXBuildFile section */
 		EB4117B0138828E700C3FABD /* 103005_glasses.png in Resources */ = {isa = PBXBuildFile; fileRef = EB4117AF138828E700C3FABD /* 103005_glasses.png */; };
+		EB77CB7515489327000FBCC8 /* MMQGraphViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB77CB7415489327000FBCC8 /* MMQGraphViewController.m */; };
+		EB77CD191549ECE4000FBCC8 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB77CD181549ECE4000FBCC8 /* QuartzCore.framework */; };
+		EB77CD1C1549F03A000FBCC8 /* MMQGraphViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB77CD1B1549F03A000FBCC8 /* MMQGraphViewController.xib */; };
+		EB77CD39154A2D0F000FBCC8 /* libCorePlot-CocoaTouch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EB77CD161549EC08000FBCC8 /* libCorePlot-CocoaTouch.a */; };
 		EB7949D1148D8E30008A4E1E /* MMQPointCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB7949D0148D8E30008A4E1E /* MMQPointCell.xib */; };
 		EB794A0B148D9A06008A4E1E /* MMQPointDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB794A09148D9A06008A4E1E /* MMQPointDetailViewController.m */; };
 		EB794A0C148D9A06008A4E1E /* MMQPointDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB794A0A148D9A06008A4E1E /* MMQPointDetailViewController.xib */; };
 		EB859ECA148D8CC0003DD0F6 /* MMQPointCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EB859EC9148D8CC0003DD0F6 /* MMQPointCell.m */; };
+		EBA59F66154A517B005E844D /* MMQGraphViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = EBA59F65154A517B005E844D /* MMQGraphViewController_iPad.xib */; };
+		EBB71336154A43DC00B69CD8 /* iPadWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = EBB71335154A43DC00B69CD8 /* iPadWindow.xib */; };
 		EBF948D413811F7000F09B86 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBF948D313811F7000F09B86 /* UIKit.framework */; };
 		EBF948D613811F7000F09B86 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBF948D513811F7000F09B86 /* Foundation.framework */; };
 		EBF948D813811F7000F09B86 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBF948D713811F7000F09B86 /* CoreGraphics.framework */; };
 		EBF948DE13811F7000F09B86 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = EBF948DC13811F7000F09B86 /* InfoPlist.strings */; };
 		EBF948E113811F7000F09B86 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EBF948E013811F7000F09B86 /* main.m */; };
 		EBF948E413811F7000F09B86 /* MMQAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EBF948E313811F7000F09B86 /* MMQAppDelegate.m */; };
-		EBF948E713811F7000F09B86 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = EBF948E513811F7000F09B86 /* MainWindow.xib */; };
+		EBF948E713811F7000F09B86 /* iPhoneWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = EBF948E513811F7000F09B86 /* iPhoneWindow.xib */; };
 		EBF948EA13811F7000F09B86 /* MMQViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EBF948E913811F7000F09B86 /* MMQViewController.m */; };
 		EBF948ED13811F7000F09B86 /* MMQViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EBF948EB13811F7000F09B86 /* MMQViewController.xib */; };
-		EBF948F413811F7100F09B86 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBF948D313811F7000F09B86 /* UIKit.framework */; };
-		EBF948F513811F7100F09B86 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBF948D513811F7000F09B86 /* Foundation.framework */; };
-		EBF948F613811F7100F09B86 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBF948D713811F7000F09B86 /* CoreGraphics.framework */; };
-		EBF948FE13811F7100F09B86 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = EBF948FC13811F7100F09B86 /* InfoPlist.strings */; };
-		EBF9490113811F7100F09B86 /* MMQTests.h in Resources */ = {isa = PBXBuildFile; fileRef = EBF9490013811F7100F09B86 /* MMQTests.h */; };
-		EBF9490313811F7100F09B86 /* MMQTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EBF9490213811F7100F09B86 /* MMQTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		EBF948F713811F7100F09B86 /* PBXContainerItemProxy */ = {
+		EB77CD151549EC08000FBCC8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = EBF948C613811F7000F09B86 /* Project object */;
+			containerPortal = EB77CD0C1549EC08000FBCC8 /* CorePlot-CocoaTouch.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = BC9B83470FB8A0A40035D8DA;
+			remoteInfo = "CorePlot-CocoaTouch";
+		};
+		EBB7131E154A2E1800B69CD8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EB77CD0C1549EC08000FBCC8 /* CorePlot-CocoaTouch.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = EBF948CE13811F7000F09B86;
-			remoteInfo = MMQ;
+			remoteGlobalIDString = BC9B83460FB8A0A40035D8DA;
+			remoteInfo = "CorePlot-CocoaTouch";
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		EB4117AF138828E700C3FABD /* 103005_glasses.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 103005_glasses.png; sourceTree = "<group>"; };
+		EB77CB7315489327000FBCC8 /* MMQGraphViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMQGraphViewController.h; sourceTree = "<group>"; };
+		EB77CB7415489327000FBCC8 /* MMQGraphViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMQGraphViewController.m; sourceTree = "<group>"; };
+		EB77CD0C1549EC08000FBCC8 /* CorePlot-CocoaTouch.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "CorePlot-CocoaTouch.xcodeproj"; path = "../../../Downloads/CorePlot_1.0/Source/framework/CorePlot-CocoaTouch.xcodeproj"; sourceTree = "<group>"; };
+		EB77CD181549ECE4000FBCC8 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		EB77CD1B1549F03A000FBCC8 /* MMQGraphViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MMQGraphViewController.xib; sourceTree = "<group>"; };
 		EB7949D0148D8E30008A4E1E /* MMQPointCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MMQPointCell.xib; path = MMQ/MMQPointCell.xib; sourceTree = "<group>"; };
 		EB794A08148D9A06008A4E1E /* MMQPointDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMQPointDetailViewController.h; sourceTree = "<group>"; };
 		EB794A09148D9A06008A4E1E /* MMQPointDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMQPointDetailViewController.m; sourceTree = "<group>"; };
 		EB794A0A148D9A06008A4E1E /* MMQPointDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MMQPointDetailViewController.xib; path = MMQ/MMQPointDetailViewController.xib; sourceTree = "<group>"; };
 		EB859EC8148D8CC0003DD0F6 /* MMQPointCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMQPointCell.h; sourceTree = SOURCE_ROOT; };
 		EB859EC9148D8CC0003DD0F6 /* MMQPointCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMQPointCell.m; sourceTree = SOURCE_ROOT; };
+		EBA59F65154A517B005E844D /* MMQGraphViewController_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MMQGraphViewController_iPad.xib; sourceTree = "<group>"; };
+		EBB71335154A43DC00B69CD8 /* iPadWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = iPadWindow.xib; sourceTree = "<group>"; };
 		EBF948CF13811F7000F09B86 /* MMQ.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MMQ.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EBF948D313811F7000F09B86 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		EBF948D513811F7000F09B86 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -57,11 +71,10 @@
 		EBF948E013811F7000F09B86 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		EBF948E213811F7000F09B86 /* MMQAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MMQAppDelegate.h; sourceTree = "<group>"; };
 		EBF948E313811F7000F09B86 /* MMQAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MMQAppDelegate.m; sourceTree = "<group>"; };
-		EBF948E613811F7000F09B86 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainWindow.xib; sourceTree = "<group>"; };
+		EBF948E613811F7000F09B86 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/iPhoneWindow.xib; sourceTree = "<group>"; };
 		EBF948E813811F7000F09B86 /* MMQViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MMQViewController.h; sourceTree = "<group>"; };
 		EBF948E913811F7000F09B86 /* MMQViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MMQViewController.m; sourceTree = "<group>"; };
 		EBF948EC13811F7000F09B86 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MMQViewController.xib; sourceTree = "<group>"; };
-		EBF948F313811F7100F09B86 /* MMQTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MMQTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EBF948FB13811F7100F09B86 /* MMQTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MMQTests-Info.plist"; sourceTree = "<group>"; };
 		EBF948FD13811F7100F09B86 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		EBF948FF13811F7100F09B86 /* MMQTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MMQTests-Prefix.pch"; sourceTree = "<group>"; };
@@ -74,19 +87,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EB77CD39154A2D0F000FBCC8 /* libCorePlot-CocoaTouch.a in Frameworks */,
+				EB77CD191549ECE4000FBCC8 /* QuartzCore.framework in Frameworks */,
 				EBF948D413811F7000F09B86 /* UIKit.framework in Frameworks */,
 				EBF948D613811F7000F09B86 /* Foundation.framework in Frameworks */,
 				EBF948D813811F7000F09B86 /* CoreGraphics.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		EBF948EF13811F7100F09B86 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				EBF948F413811F7100F09B86 /* UIKit.framework in Frameworks */,
-				EBF948F513811F7100F09B86 /* Foundation.framework in Frameworks */,
-				EBF948F613811F7100F09B86 /* CoreGraphics.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -96,13 +101,24 @@
 		EB6DE601148DAD7400AD3899 /* Interfaces */ = {
 			isa = PBXGroup;
 			children = (
-				EBF948E513811F7000F09B86 /* MainWindow.xib */,
+				EBF948E513811F7000F09B86 /* iPhoneWindow.xib */,
+				EBB71335154A43DC00B69CD8 /* iPadWindow.xib */,
 				EBF948EB13811F7000F09B86 /* MMQViewController.xib */,
 				EB7949D0148D8E30008A4E1E /* MMQPointCell.xib */,
 				EB794A0A148D9A06008A4E1E /* MMQPointDetailViewController.xib */,
+				EB77CD1B1549F03A000FBCC8 /* MMQGraphViewController.xib */,
+				EBA59F65154A517B005E844D /* MMQGraphViewController_iPad.xib */,
 			);
 			name = Interfaces;
 			path = ..;
+			sourceTree = "<group>";
+		};
+		EB77CD0D1549EC08000FBCC8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				EB77CD161549EC08000FBCC8 /* libCorePlot-CocoaTouch.a */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		EBF948C413811F7000F09B86 = {
@@ -120,7 +136,6 @@
 			isa = PBXGroup;
 			children = (
 				EBF948CF13811F7000F09B86 /* MMQ.app */,
-				EBF948F313811F7100F09B86 /* MMQTests.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -128,6 +143,8 @@
 		EBF948D213811F7000F09B86 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				EB77CD0C1549EC08000FBCC8 /* CorePlot-CocoaTouch.xcodeproj */,
+				EB77CD181549ECE4000FBCC8 /* QuartzCore.framework */,
 				EBF948D313811F7000F09B86 /* UIKit.framework */,
 				EBF948D513811F7000F09B86 /* Foundation.framework */,
 				EBF948D713811F7000F09B86 /* CoreGraphics.framework */,
@@ -146,6 +163,8 @@
 				EB859EC9148D8CC0003DD0F6 /* MMQPointCell.m */,
 				EB794A08148D9A06008A4E1E /* MMQPointDetailViewController.h */,
 				EB794A09148D9A06008A4E1E /* MMQPointDetailViewController.m */,
+				EB77CB7315489327000FBCC8 /* MMQGraphViewController.h */,
+				EB77CB7415489327000FBCC8 /* MMQGraphViewController.m */,
 				EB6DE601148DAD7400AD3899 /* Interfaces */,
 				EBF948DA13811F7000F09B86 /* Supporting Files */,
 			);
@@ -197,30 +216,12 @@
 			buildRules = (
 			);
 			dependencies = (
+				EBB7131F154A2E1800B69CD8 /* PBXTargetDependency */,
 			);
 			name = MMQ;
 			productName = MMQ;
 			productReference = EBF948CF13811F7000F09B86 /* MMQ.app */;
 			productType = "com.apple.product-type.application";
-		};
-		EBF948F213811F7100F09B86 /* MMQTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = EBF9490913811F7100F09B86 /* Build configuration list for PBXNativeTarget "MMQTests" */;
-			buildPhases = (
-				EBF948EE13811F7100F09B86 /* Sources */,
-				EBF948EF13811F7100F09B86 /* Frameworks */,
-				EBF948F013811F7100F09B86 /* Resources */,
-				EBF948F113811F7100F09B86 /* ShellScript */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				EBF948F813811F7100F09B86 /* PBXTargetDependency */,
-			);
-			name = MMQTests;
-			productName = MMQTests;
-			productReference = EBF948F313811F7100F09B86 /* MMQTests.octest */;
-			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
 
@@ -237,17 +238,33 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				English,
 			);
 			mainGroup = EBF948C413811F7000F09B86;
 			productRefGroup = EBF948D013811F7000F09B86 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = EB77CD0D1549EC08000FBCC8 /* Products */;
+					ProjectRef = EB77CD0C1549EC08000FBCC8 /* CorePlot-CocoaTouch.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				EBF948CE13811F7000F09B86 /* MMQ */,
-				EBF948F213811F7100F09B86 /* MMQTests */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		EB77CD161549EC08000FBCC8 /* libCorePlot-CocoaTouch.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libCorePlot-CocoaTouch.a";
+			remoteRef = EB77CD151549EC08000FBCC8 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		EBF948CD13811F7000F09B86 /* Resources */ = {
@@ -255,40 +272,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				EBF948DE13811F7000F09B86 /* InfoPlist.strings in Resources */,
-				EBF948E713811F7000F09B86 /* MainWindow.xib in Resources */,
+				EBF948E713811F7000F09B86 /* iPhoneWindow.xib in Resources */,
 				EBF948ED13811F7000F09B86 /* MMQViewController.xib in Resources */,
 				EB4117B0138828E700C3FABD /* 103005_glasses.png in Resources */,
 				EB7949D1148D8E30008A4E1E /* MMQPointCell.xib in Resources */,
 				EB794A0C148D9A06008A4E1E /* MMQPointDetailViewController.xib in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		EBF948F013811F7100F09B86 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				EBF948FE13811F7100F09B86 /* InfoPlist.strings in Resources */,
-				EBF9490113811F7100F09B86 /* MMQTests.h in Resources */,
+				EB77CD1C1549F03A000FBCC8 /* MMQGraphViewController.xib in Resources */,
+				EBB71336154A43DC00B69CD8 /* iPadWindow.xib in Resources */,
+				EBA59F66154A517B005E844D /* MMQGraphViewController_iPad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		EBF948F113811F7100F09B86 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		EBF948CB13811F7000F09B86 /* Sources */ = {
@@ -300,24 +295,17 @@
 				EBF948EA13811F7000F09B86 /* MMQViewController.m in Sources */,
 				EB859ECA148D8CC0003DD0F6 /* MMQPointCell.m in Sources */,
 				EB794A0B148D9A06008A4E1E /* MMQPointDetailViewController.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		EBF948EE13811F7100F09B86 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				EBF9490313811F7100F09B86 /* MMQTests.m in Sources */,
+				EB77CB7515489327000FBCC8 /* MMQGraphViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		EBF948F813811F7100F09B86 /* PBXTargetDependency */ = {
+		EBB7131F154A2E1800B69CD8 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = EBF948CE13811F7000F09B86 /* MMQ */;
-			targetProxy = EBF948F713811F7100F09B86 /* PBXContainerItemProxy */;
+			name = "CorePlot-CocoaTouch";
+			targetProxy = EBB7131E154A2E1800B69CD8 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -330,12 +318,12 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
-		EBF948E513811F7000F09B86 /* MainWindow.xib */ = {
+		EBF948E513811F7000F09B86 /* iPhoneWindow.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
 				EBF948E613811F7000F09B86 /* en */,
 			);
-			name = MainWindow.xib;
+			name = iPhoneWindow.xib;
 			path = MMQ;
 			sourceTree = "<group>";
 		};
@@ -366,7 +354,7 @@
 					armv6,
 					armv7,
 				);
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
@@ -376,6 +364,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.1;
+				OTHER_LDFLAGS = "-ObjC";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 			};
@@ -388,7 +377,7 @@
 					armv6,
 					armv7,
 				);
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_THUMB_SUPPORT = NO;
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
@@ -396,6 +385,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.1;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				OTHER_LDFLAGS = "-ObjC";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 			};
@@ -404,18 +394,26 @@
 		EBF9490713811F7100F09B86 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MMQ/MMQ-Prefix.pch";
 				GCC_THUMB_SUPPORT = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				HEADER_SEARCH_PATHS = "/Users/pedro/Downloads/CorePlot_1.0/Binaries/iOS/**";
 				INFOPLIST_FILE = "MMQ/MMQ-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../../Downloads/CorePlot_1.0/Binaries/iOS\"",
+				);
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -423,67 +421,27 @@
 		EBF9490813811F7100F09B86 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MMQ/MMQ-Prefix.pch";
 				GCC_THUMB_SUPPORT = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				HEADER_SEARCH_PATHS = "/Users/pedro/Downloads/CorePlot_1.0/Binaries/iOS/**";
 				INFOPLIST_FILE = "MMQ/MMQ-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../../Downloads/CorePlot_1.0/Binaries/iOS\"",
+				);
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;
-			};
-			name = Release;
-		};
-		EBF9490A13811F7100F09B86 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/MMQ.app/MMQ";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "MMQTests/MMQTests-Prefix.pch";
-				GCC_THUMB_SUPPORT = NO;
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				INFOPLIST_FILE = "MMQTests/MMQTests-Info.plist";
-				OTHER_LDFLAGS = (
-					"-framework",
-					SenTestingKit,
-				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = octest;
-			};
-			name = Debug;
-		};
-		EBF9490B13811F7100F09B86 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/MMQ.app/MMQ";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "MMQTests/MMQTests-Prefix.pch";
-				GCC_THUMB_SUPPORT = NO;
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				INFOPLIST_FILE = "MMQTests/MMQTests-Info.plist";
-				OTHER_LDFLAGS = (
-					"-framework",
-					SenTestingKit,
-				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = octest;
 			};
 			name = Release;
 		};
@@ -504,15 +462,6 @@
 			buildConfigurations = (
 				EBF9490713811F7100F09B86 /* Debug */,
 				EBF9490813811F7100F09B86 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		EBF9490913811F7100F09B86 /* Build configuration list for PBXNativeTarget "MMQTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				EBF9490A13811F7100F09B86 /* Debug */,
-				EBF9490B13811F7100F09B86 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

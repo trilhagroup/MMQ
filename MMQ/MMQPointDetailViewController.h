@@ -19,12 +19,12 @@
     id firstResponder;
 }
 
-@property (nonatomic, retain) UITextField *tX;
-@property (nonatomic, retain) UITextField *tY;
-@property (nonatomic, retain) NSIndexPath *indexPath;
-@property (assign) MMQViewController *controller;
+@property (strong, nonatomic) UITextField *tX;
+@property (strong, nonatomic) UITextField *tY;
+@property (strong, nonatomic) NSIndexPath *indexPath;
+@property (strong) MMQViewController *controller;
 
-@property (assign) id firstResponder;
+@property (strong) id firstResponder;
 
 - (IBAction)inverterValores;
 - (void)negativarValor;

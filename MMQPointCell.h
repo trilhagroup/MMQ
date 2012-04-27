@@ -13,7 +13,7 @@
     IBOutlet UILabel *valorY;
 }
 
-@property (nonatomic, retain) UILabel *valorX;
-@property (nonatomic, retain) UILabel *valorY;
+@property (strong, nonatomic) UILabel *valorX;
+@property (strong, nonatomic) UILabel *valorY;
 
 @end
