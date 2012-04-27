@@ -10,19 +10,19 @@
 #import "CorePlot-CocoaTouch.h"
 @class MMQViewController;
 
-@interface MMQGraphViewController : UIViewController <CPTPlotDataSource, UIActionSheetDelegate, UISplitViewControllerDelegate> {
+@interface MMQGraphViewController : UIViewController <CPTPlotDataSource, CPTPlotSpaceDelegate, UIActionSheetDelegate, UISplitViewControllerDelegate> {
     IBOutlet MMQViewController *controller;
     IBOutlet CPTGraphHostingView *graphHostingView;
     CPTXYGraph *graph;
     CPTScatterPlot *plotGraph;
     
     NSArray *sortedValuesX;
-    NSArray *sortedValuesY;
     
     UIBarButtonItem *actionButton;
     IBOutlet UIToolbar *toolbar;
     
     float lengthX, lengthY;
+    CGFloat graphScale;
 }
 
 @property (strong) MMQViewController *controller;

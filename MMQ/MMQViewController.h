@@ -11,7 +11,7 @@
 
 
 @interface MMQViewController : UIViewController <UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource> {
-    IBOutlet UITableView *tTabela;
+    IBOutlet UITableView *menuTableView;
     IBOutlet MMQGraphViewController *graphViewController;
     IBOutlet UIBarButtonItem *aboutButton;
     IBOutlet UIBarButtonItem *calculateButton;
@@ -32,8 +32,8 @@
 - (IBAction)calcular;
 - (IBAction)showGraph:(id)sender;
 - (IBAction)adicionarPonto;
+- (IBAction)atualizarTabela;
 - (IBAction)entrarModoEdicao;
-- (void)atualizarTabela;
 - (IBAction)infoSobre;
 
 @end

@@ -106,11 +106,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "MMQ/MMQGraphViewController.m"
-         timestampString = "357244329.177811"
+         timestampString = "357255065.677521"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "163"
-         endingLineNumber = "163"
+         startingLineNumber = "177"
+         endingLineNumber = "177"
          landmarkName = "-minValueInArray:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -132,11 +132,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "MMQ/MMQGraphViewController.m"
-         timestampString = "357244329.177811"
+         timestampString = "357255065.677521"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "204"
-         endingLineNumber = "204"
+         startingLineNumber = "227"
+         endingLineNumber = "227"
          landmarkName = "@implementation MMQGraphViewController"
          landmarkType = "3">
       </FileBreakpoint>
@@ -171,11 +171,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "MMQ/MMQViewController.m"
-         timestampString = "357239699.742121"
+         timestampString = "357256424.268189"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "182"
-         endingLineNumber = "182"
+         startingLineNumber = "184"
+         endingLineNumber = "184"
          landmarkName = "-viewDidLoad"
          landmarkType = "5">
       </FileBreakpoint>
@@ -184,11 +184,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "MMQ/MMQViewController.m"
-         timestampString = "357239699.742121"
+         timestampString = "357256424.268189"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "183"
-         endingLineNumber = "183"
+         startingLineNumber = "185"
+         endingLineNumber = "185"
          landmarkName = "-viewDidLoad"
          landmarkType = "5">
       </FileBreakpoint>
@@ -223,11 +223,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "MMQ/MMQViewController.m"
-         timestampString = "357239699.742121"
+         timestampString = "357256424.268189"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "184"
-         endingLineNumber = "184"
+         startingLineNumber = "186"
+         endingLineNumber = "186"
          landmarkName = "-viewDidLoad"
          landmarkType = "5">
       </FileBreakpoint>
@@ -236,11 +236,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "MMQ/MMQViewController.m"
-         timestampString = "357239759.508895"
+         timestampString = "357256424.268189"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "173"
-         endingLineNumber = "173"
+         startingLineNumber = "175"
+         endingLineNumber = "175"
          landmarkName = "-showGraph:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -249,11 +249,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "MMQ/MMQGraphViewController.m"
-         timestampString = "357244329.177811"
+         timestampString = "357255065.677521"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "130"
-         endingLineNumber = "130"
+         startingLineNumber = "137"
+         endingLineNumber = "137"
          landmarkName = "-reloadView"
          landmarkType = "5">
       </FileBreakpoint>
@@ -262,12 +262,38 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "MMQ/MMQGraphViewController.m"
-         timestampString = "357244329.177811"
+         timestampString = "357255065.677521"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "195"
-         endingLineNumber = "195"
+         startingLineNumber = "209"
+         endingLineNumber = "209"
          landmarkName = "-numberForPlot:field:recordIndex:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "MMQ/MMQGraphViewController.m"
+         timestampString = "357255065.677521"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "224"
+         endingLineNumber = "224"
+         landmarkName = "-plotSpace:shouldScaleBy:aboutPoint:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "MMQ/MMQViewController.m"
+         timestampString = "357259164.159815"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "321"
+         endingLineNumber = "321"
+         landmarkName = "-tableView:moveRowAtIndexPath:toIndexPath:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

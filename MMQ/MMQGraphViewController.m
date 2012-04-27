@@ -40,6 +40,7 @@
     
     
     // GRAPH code
+    graphScale = 1.0f;
     graph = [[CPTXYGraph alloc] initWithFrame:self.view.bounds];
     
     graphHostingView.hostedGraph = graph;
@@ -49,6 +50,10 @@
     graph.paddingBottom = 20.0;
     
     [self reloadView];
+    
+    CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *)graph.defaultPlotSpace;
+    [plotSpace setDelegate:self];
+    [plotSpace setAllowsUserInteraction:YES];
     
     CPTMutableLineStyle *lineStyle = [CPTLineStyle lineStyle];
     lineStyle.lineColor = [CPTColor blackColor];
@@ -113,6 +118,8 @@
     }
 }
 
+#pragma mark - User Methods
+
 - (void)reloadView {
     
     [self sortArrays];
@@ -130,6 +137,14 @@
     [graph reloadData];
 }
 
+- (void)reloadTicksInterval {
+    /*
+    CPTXYAxisSet *axisSet = (CPTXYAxisSet *)graph.axisSet;
+    axisSet.xAxis.majorIntervalLength = [[NSNumber numberWithFloat:lengthX / 5.0f * graphScale] decimalValue];
+    axisSet.yAxis.majorIntervalLength = [[NSNumber numberWithFloat:lengthY / 5.0f * graphScale] decimalValue];
+     */
+}
+
 NSInteger intSort(id num1, id num2, void *context) {
     int v1 = [(NSString *)num1 floatValue];
     int v2 = [(NSString *)num2 floatValue];
@@ -143,7 +158,6 @@ NSInteger intSort(id num1, id num2, void *context) {
 
 - (void)sortArrays {
     sortedValuesX = [controller.valuesX sortedArrayUsingFunction:intSort context:NULL];
-    sortedValuesY = [controller.valuesY sortedArrayUsingFunction:intSort context:NULL];
 }
 
 - (float)maxValueInArray:(NSMutableArray *)arr {
@@ -175,7 +189,7 @@ NSInteger intSort(id num1, id num2, void *context) {
 - (IBAction)showActionSheet:(id)sender {
     // Mostra popover para o botão
     
-    UIActionSheet *action = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Ações", nil) delegate:self cancelButtonTitle:NSLocalizedString(@"Cancelar", nil) destructiveButtonTitle:nil otherButtonTitles: NSLocalizedString(@"Ler com outro app", nil), nil];
+    UIActionSheet *action = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Actions", nil) delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) destructiveButtonTitle:nil otherButtonTitles: NSLocalizedString(@"Change line color", nil), nil];
     [action showFromBarButtonItem:actionButton animated:YES];
 }
 
@@ -192,7 +206,7 @@ NSInteger intSort(id num1, id num2, void *context) {
         return [NSNumber numberWithFloat:[[sortedValuesX objectAtIndex:index] floatValue]];
     } else {
         if (plot == plotGraph) { // Rect normalized
-            NSLog(@"%f Y", [[sortedValuesX objectAtIndex:index] floatValue] * controller.a + controller.b);
+            //NSLog(@"%f Y", [[sortedValuesX objectAtIndex:index] floatValue] * controller.a + controller.b);
             return [NSNumber numberWithFloat:([[sortedValuesX objectAtIndex:index] floatValue] * controller.a + controller.b)];
         } else { // Multiple points
             NSInteger indexY = [controller.valuesX indexOfObject: [sortedValuesX objectAtIndex:index]];
@@ -202,21 +216,29 @@ NSInteger intSort(id num1, id num2, void *context) {
     }
 }
 
+#pragma mark - Graph Delegate
+
+-(BOOL)plotSpace:(CPTPlotSpace *)space shouldScaleBy:(CGFloat)interactionScale aboutPoint:(CGPoint)interactionPoint {
+    graphScale *= interactionScale;
+    [self reloadTicksInterval];
+    return YES;
+}
+
+
 #pragma mark - Action Sheet Delegate
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 0) {
-        ((CPTMutableLineStyle *)plotGraph.dataLineStyle).lineColor = [CPTColor redColor];
-        [graph setNeedsDisplay];
+        ((CPTMutableLineStyle *)plotGraph.dataLineStyle).lineColor = [CPTColor blueColor];
+        [graphHostingView setNeedsDisplay];
     }
 }
 
-#pragma mark -
-#pragma mark Split View Controller support
+#pragma mark - Split View Controller support
 
 - (void)splitViewController: (UISplitViewController*)svc willHideViewController:(UIViewController *)aViewController withBarButtonItem:(UIBarButtonItem*)barButtonItem forPopoverController: (UIPopoverController*)pc {
     
-     barButtonItem.title = NSLocalizedString(@"Arquivos", nil);
+     barButtonItem.title = NSLocalizedString(@"Points", nil);
      NSMutableArray *items = [[toolbar items] mutableCopy];
      [items insertObject:barButtonItem atIndex:0];
      [toolbar setItems:items animated:YES];

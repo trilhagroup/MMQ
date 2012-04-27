@@ -117,6 +117,8 @@
                               otherButtonTitles:nil];
         [alert show];
         */
+        
+        [menuTableView reloadData];
     } else {
         UIAlertView *alert = [[UIAlertView alloc] 
                               initWithTitle:@"Ops..." 
@@ -136,24 +138,24 @@
     [valuesX insertObject:[[NSNumber numberWithFloat:0.0] stringValue] atIndex:0];
     [valuesY insertObject:[[NSNumber numberWithFloat:0.0] stringValue] atIndex:0];
     
-    [tTabela insertRowsAtIndexPaths:[NSArray arrayWithObjects:[NSIndexPath indexPathForRow:0 inSection:0], nil] withRowAnimation:UITableViewRowAnimationLeft];
+    [menuTableView insertRowsAtIndexPaths:[NSArray arrayWithObjects:[NSIndexPath indexPathForRow:0 inSection:0], nil] withRowAnimation:UITableViewRowAnimationLeft];
     
-    [self tableView:tTabela didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    [self tableView:menuTableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
 }
 
 - (IBAction) entrarModoEdicao {
-    [tTabela setEditing: ![tTabela isEditing] animated:YES];
+    [menuTableView setEditing: ![menuTableView isEditing] animated:YES];
 }
 
-- (void)atualizarTabela {
-    [tTabela reloadData];
+- (IBAction)atualizarTabela {
+    [menuTableView reloadData];
 }
 
 - (IBAction) infoSobre {
 	
 	UIAlertView *alert = [[UIAlertView alloc] 
-						  initWithTitle:@"Sobre" 
-						  message: @"Este programa calcula os valores de a e b incluindo seus erros (deltas) pelo Método dos Mínimos Quadrados.\n\nDesenvolvedor: Pedro P. M. Góes\n\nVersão atual: 1.2\nRelease: Março/2012\n\nAgora também disponível para Android!"
+						  initWithTitle:NSLocalizedString(@"About", nil)
+						  message: NSLocalizedString(@"Info", @"Este programa calcula os valores de a e b incluindo seus erros (deltas) pelo Método dos Mínimos Quadrados.\n\nDesenvolvedor: Pedro P. M. Góes\n\nVersão atual: 1.3\nRelease: Abril/2012\n\nAgora também disponível para Android!")
 						  delegate:self 
 						  cancelButtonTitle:@"Ok" 
 						  otherButtonTitles:nil];
@@ -183,10 +185,11 @@
     [super viewDidLoad];
     
     [self carregarDados];
+    [self calcular];
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(adicionarPonto)];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(entrarModoEdicao)];
-    self.navigationItem.title = NSLocalizedString(@"MMQ", nil);
+    self.navigationItem.title = NSLocalizedString(@"Data", nil);
     
     aboutButton.title = NSLocalizedString(@"About", nil);
     calculateButton.title = NSLocalizedString(@"Calculate!", nil);
@@ -208,38 +211,91 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)aTableView {
-    return 1;
+    return 2;
 }
 
 
 - (NSInteger)tableView:(UITableView *)aTableView numberOfRowsInSection:(NSInteger)section {
-    // Podemos retornar a quantidade do vetor X ou Y (que DEVEM ter o mesmo número de elementos)
-    return ([valuesX count]);
+    if (section == 0) {
+        return ([valuesX count]);
+    } else {
+        return 5;
+    }
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    if (section == 0) {
+        return NSLocalizedString(@"Points", nil);
+    } else {
+        return NSLocalizedString(@"Results", nil);
+    }
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	static NSString * CustomCellIdentifier = @"CustomCellIdentifier";
-    MMQPointCell * celula = (MMQPointCell *)[tableView dequeueReusableCellWithIdentifier: CustomCellIdentifier];
-    
-	if (celula == nil) {
-		NSArray * nib = [[NSBundle mainBundle] loadNibNamed:@"MMQPointCell" owner:self options:nil];
-		for (id oneObject in nib) {
-			if ([oneObject isKindOfClass:[MMQPointCell class]]) {
-				celula = (MMQPointCell *)oneObject;
-			}
-		}
-	}
-	
-	// Construindo a célula
-    celula.valorX.text = [valuesX objectAtIndex:indexPath.row];
-    celula.valorY.text = [valuesY objectAtIndex:indexPath.row];  
-    celula.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-	
-	return celula;
+    if (indexPath.section == 0) {
+        static NSString * CustomCellIdentifier = @"CustomCellIdentifier";
+        MMQPointCell * celula = (MMQPointCell *)[tableView dequeueReusableCellWithIdentifier: CustomCellIdentifier];
+        
+        if (celula == nil) {
+            NSArray * nib = [[NSBundle mainBundle] loadNibNamed:@"MMQPointCell" owner:self options:nil];
+            for (id oneObject in nib) {
+                if ([oneObject isKindOfClass:[MMQPointCell class]]) {
+                    celula = (MMQPointCell *)oneObject;
+                }
+            }
+        }
+        
+        // Construindo a célula
+        celula.valorX.text = [valuesX objectAtIndex:indexPath.row];
+        celula.valorY.text = [valuesY objectAtIndex:indexPath.row];  
+        celula.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        
+        return celula;
+    } else {
+        static NSString *CellIdentifier = @"Cell";
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        
+        if (cell == nil) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
+        }
+        
+        cell.accessoryType = UITableViewCellAccessoryNone;
+        
+        switch (indexPath.row) {
+            case 0:
+                cell.textLabel.text = [NSString stringWithFormat:@"a"];
+                cell.detailTextLabel.text = [NSString stringWithFormat:@"%f", a];
+                break;
+            case 1:
+                cell.textLabel.text = [NSString stringWithFormat:@"b"];
+                cell.detailTextLabel.text = [NSString stringWithFormat:@"%f", b];
+                break;
+            case 2:
+                cell.textLabel.text = [NSString stringWithFormat:@"Δa"];
+                cell.detailTextLabel.text = [NSString stringWithFormat:@"%f", deltaA];
+                break;
+            case 3:
+                cell.textLabel.text = [NSString stringWithFormat:@"Δb"];
+                cell.detailTextLabel.text = [NSString stringWithFormat:@"%f", deltaB];
+                break;
+            case 4:
+                cell.textLabel.text = [NSString stringWithFormat:@"Δy"];
+                cell.detailTextLabel.text = [NSString stringWithFormat:@"%f", deltaY];
+                break;
+                
+            default:
+                break;
+        }
+        
+        return cell;
+    }
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 1) {
+        return NO;
+    }
     return YES;
 }
 
@@ -253,31 +309,48 @@
 }
 
 - (BOOL) tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 1) {
+        return NO;
+    }
     return YES;
 }
 
 - (void) tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
     
-    // Vamos substituir os valores em ambos os vetores X e Y
-    id objeto = [valuesX objectAtIndex:(destinationIndexPath.row)];
-    [valuesX removeObjectAtIndex:(destinationIndexPath.row)];
-    [valuesX insertObject:objeto atIndex:(sourceIndexPath.row)];
+    if (destinationIndexPath.section != 1) {
+        // Vamos substituir os valores em ambos os vetores X e Y
+        id objeto = [valuesX objectAtIndex:(sourceIndexPath.row)];
+        [valuesX removeObjectAtIndex:(sourceIndexPath.row)];
+        [valuesX insertObject:objeto atIndex:(destinationIndexPath.row)];
+        
+        objeto = [valuesY objectAtIndex:(sourceIndexPath.row)];
+        [valuesY removeObjectAtIndex:(sourceIndexPath.row)];
+        [valuesY insertObject:objeto atIndex:(destinationIndexPath.row)];
+    }
     
-    objeto = [valuesY objectAtIndex:(destinationIndexPath.row)];
-    [valuesY removeObjectAtIndex:(destinationIndexPath.row)];
-    [valuesY insertObject:objeto atIndex:(sourceIndexPath.row)];
+    [tableView reloadData];
     
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    MMQPointDetailViewController *pdvc = [[MMQPointDetailViewController alloc] initWithNibName:@"MMQPointDetailViewController" bundle:nil];
-    [self.navigationController pushViewController:pdvc animated:YES];
-    
-    pdvc.xTextField.text = [valuesX objectAtIndex:indexPath.row];
-    pdvc.yTextField.text = [valuesY objectAtIndex:indexPath.row];
-    pdvc.indexPath = indexPath;
-    pdvc.controller = self;
+    if (indexPath.section == 0) {
+        MMQPointDetailViewController *pdvc = [[MMQPointDetailViewController alloc] initWithNibName:@"MMQPointDetailViewController" bundle:nil];
+        [self.navigationController pushViewController:pdvc animated:YES];
+        
+        pdvc.xTextField.text = [valuesX objectAtIndex:indexPath.row];
+        pdvc.yTextField.text = [valuesY objectAtIndex:indexPath.row];
+        pdvc.indexPath = indexPath;
+        pdvc.controller = self;
+    } else {
+        UIAlertView *alert = [[UIAlertView alloc] 
+                              initWithTitle:NSLocalizedString(@"Results", nil)
+                              message: NSLocalizedString(@"ResultsInfo", @"Hit Calculate! to update the results table.")
+                              delegate:self 
+                              cancelButtonTitle:@"Ok" 
+                              otherButtonTitles:nil];
+        [alert show];
+    }
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
