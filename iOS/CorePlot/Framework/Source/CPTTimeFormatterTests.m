@@ -4,22 +4,22 @@
 @implementation CPTTimeFormatterTests
 
 #pragma mark -
-#pragma mark NSCoding
+#pragma mark NSCoding Methods
 
 -(void)testKeyedArchivingRoundTrip
 {
-	NSDate *refDate				   = [NSDate dateWithNaturalLanguageString:@"12:00 Oct 29, 2009"];
-	NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
+    NSDate *refDate                = [NSDate dateWithNaturalLanguageString:@"12:00 Oct 29, 2009"];
+    NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
 
-	dateFormatter.dateStyle = kCFDateFormatterShortStyle;
+    dateFormatter.dateStyle = NSDateFormatterShortStyle;
 
-	CPTTimeFormatter *timeFormatter = [[[CPTTimeFormatter alloc] initWithDateFormatter:dateFormatter] autorelease];
-	timeFormatter.referenceDate = refDate;
+    CPTTimeFormatter *timeFormatter = [[[CPTTimeFormatter alloc] initWithDateFormatter:dateFormatter] autorelease];
+    timeFormatter.referenceDate = refDate;
 
-	CPTTimeFormatter *newTimeFormatter = [NSKeyedUnarchiver unarchiveObjectWithData:[NSKeyedArchiver archivedDataWithRootObject:timeFormatter]];
+    CPTTimeFormatter *newTimeFormatter = [NSKeyedUnarchiver unarchiveObjectWithData:[NSKeyedArchiver archivedDataWithRootObject:timeFormatter]];
 
-	STAssertEqualObjects(timeFormatter.dateFormatter.dateFormat, newTimeFormatter.dateFormatter.dateFormat, @"Date formatter not equal");
-	STAssertEqualObjects(timeFormatter.referenceDate, newTimeFormatter.referenceDate, @"Reference date not equal");
+    STAssertEqualObjects(timeFormatter.dateFormatter.dateFormat, newTimeFormatter.dateFormatter.dateFormat, @"Date formatter not equal");
+    STAssertEqualObjects(timeFormatter.referenceDate, newTimeFormatter.referenceDate, @"Reference date not equal");
 }
 
 @end

@@ -2,12 +2,12 @@
 
 @implementation NSDecimalNumber(CPTExtensions)
 
-/**	@brief Returns the value of the receiver as an NSDecimalNumber.
- *	@return The value of the receiver as an NSDecimalNumber.
+/** @brief Returns the value of the receiver as an NSDecimalNumber.
+ *  @return The value of the receiver as an NSDecimalNumber.
  **/
 -(NSDecimalNumber *)decimalNumber
 {
-	return [[self copy] autorelease];
+    return [[self copy] autorelease];
 }
 
 @end

@@ -4,15 +4,15 @@
 @implementation CPTColorTests
 
 #pragma mark -
-#pragma mark NSCoding
+#pragma mark NSCoding Methods
 
 -(void)testKeyedArchivingRoundTrip
 {
-	CPTColor *color = [CPTColor redColor];
+    CPTColor *color = [CPTColor redColor];
 
-	CPTColor *newColor = [NSKeyedUnarchiver unarchiveObjectWithData:[NSKeyedArchiver archivedDataWithRootObject:color]];
+    CPTColor *newColor = [NSKeyedUnarchiver unarchiveObjectWithData:[NSKeyedArchiver archivedDataWithRootObject:color]];
 
-	STAssertEqualObjects(color, newColor, @"Colors not equal");
+    STAssertEqualObjects(color, newColor, @"Colors not equal");
 }
 
 @end

@@ -1,3 +1,8 @@
+#import <Cocoa/Cocoa.h>
+
+#import <CorePlot/CPTAnimation.h>
+#import <CorePlot/CPTAnimationOperation.h>
+#import <CorePlot/CPTAnimationPeriod.h>
 #import <CorePlot/CPTAnnotation.h>
 #import <CorePlot/CPTAnnotationHostLayer.h>
 #import <CorePlot/CPTAxis.h>
@@ -6,6 +11,7 @@
 #import <CorePlot/CPTAxisTitle.h>
 #import <CorePlot/CPTBarPlot.h>
 #import <CorePlot/CPTBorderedLayer.h>
+#import <CorePlot/CPTCalendarFormatter.h>
 #import <CorePlot/CPTColor.h>
 #import <CorePlot/CPTColorSpace.h>
 #import <CorePlot/CPTConstraints.h>

@@ -1,10 +1,9 @@
 #import "CPTColor.h"
 #import "CPTLayer.h"
 #import "CPTPlatformSpecificDefines.h"
-#import <UIKit/UIKit.h>
 
-/**	@category CPTColor(CPTPlatformSpecificColorExtensions)
- *	@brief Platform-specific extensions to CPTColor.
+/** @category CPTColor(CPTPlatformSpecificColorExtensions)
+ *  @brief Platform-specific extensions to CPTColor.
  **/
 @interface CPTColor(CPTPlatformSpecificColorExtensions)
 
@@ -12,20 +11,20 @@
 
 @end
 
-/**	@category CPTLayer(CPTPlatformSpecificLayerExtensions)
- *	@brief Platform-specific extensions to CPTLayer.
+/** @category CPTLayer(CPTPlatformSpecificLayerExtensions)
+ *  @brief Platform-specific extensions to CPTLayer.
  **/
 @interface CPTLayer(CPTPlatformSpecificLayerExtensions)
 
 /// @name Images
 /// @{
 -(CPTNativeImage *)imageOfLayer;
-///	@}
+/// @}
 
 @end
 
-/**	@category NSNumber(CPTPlatformSpecificNumberExtensions)
- *	@brief Platform-specific extensions to NSNumber.
+/** @category NSNumber(CPTPlatformSpecificNumberExtensions)
+ *  @brief Platform-specific extensions to NSNumber.
  **/
 @interface NSNumber(CPTPlatformSpecificNumberExtensions)
 

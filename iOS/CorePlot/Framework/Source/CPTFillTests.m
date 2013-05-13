@@ -34,44 +34,49 @@
 @implementation CPTFillTests
 
 #pragma mark -
-#pragma mark NSCoding
+#pragma mark NSCoding Methods
 
 -(void)testKeyedArchivingRoundTripColor
 {
-	_CPTFillColor *fill = (_CPTFillColor *)[CPTFill fillWithColor:[CPTColor redColor]];
+    _CPTFillColor *fill = (_CPTFillColor *)[CPTFill fillWithColor:[CPTColor redColor]];
 
-	_CPTFillColor *newFill = [NSKeyedUnarchiver unarchiveObjectWithData:[NSKeyedArchiver archivedDataWithRootObject:fill]];
+    _CPTFillColor *newFill = [NSKeyedUnarchiver unarchiveObjectWithData:[NSKeyedArchiver archivedDataWithRootObject:fill]];
 
-	STAssertEqualObjects(fill.fillColor, newFill.fillColor, @"Fill with color not equal");
+    STAssertEqualObjects(fill.fillColor, newFill.fillColor, @"Fill with color not equal");
 }
 
 -(void)testKeyedArchivingRoundTripGradient
 {
-	_CPTFillGradient *fill = (_CPTFillGradient *)[CPTFill fillWithGradient:[CPTGradient rainbowGradient]];
+    _CPTFillGradient *fill = (_CPTFillGradient *)[CPTFill fillWithGradient:[CPTGradient rainbowGradient]];
 
-	_CPTFillGradient *newFill = [NSKeyedUnarchiver unarchiveObjectWithData:[NSKeyedArchiver archivedDataWithRootObject:fill]];
+    _CPTFillGradient *newFill = [NSKeyedUnarchiver unarchiveObjectWithData:[NSKeyedArchiver archivedDataWithRootObject:fill]];
 
-	STAssertEqualObjects(fill.fillGradient, newFill.fillGradient, @"Fill with gradient not equal");
+    STAssertEqualObjects(fill.fillGradient, newFill.fillGradient, @"Fill with gradient not equal");
 }
 
 -(void)testKeyedArchivingRoundTripImage
 {
-	CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-	CGImageRef cgImage		   = CGImageCreate(100, 100, 8, 32, 400, colorSpace, kCGBitmapAlphaInfoMask, NULL, NULL, YES, kCGRenderingIntentDefault);
+    const size_t width  = 100;
+    const size_t height = 100;
 
-	CPTImage *image = [CPTImage imageWithCGImage:cgImage];
+    size_t bytesPerRow         = (4 * width + 15) & ~15ul;
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB);
+    CGContextRef context       = CGBitmapContextCreate(NULL, width, height, 8, bytesPerRow, colorSpace, kCGImageAlphaNoneSkipLast);
+    CGImageRef cgImage         = CGBitmapContextCreateImage(context);
 
-	image.tiled					= YES;
-	image.tileAnchoredToContext = YES;
+    CPTImage *image = [CPTImage imageWithCGImage:cgImage];
 
-	CGColorSpaceRelease(colorSpace);
-	CGImageRelease(cgImage);
+    image.tiled                 = YES;
+    image.tileAnchoredToContext = YES;
 
-	_CPTFillImage *fill = (_CPTFillImage *)[CPTFill fillWithImage:image];
+    CGColorSpaceRelease(colorSpace);
+    CGImageRelease(cgImage);
 
-	_CPTFillImage *newFill = [NSKeyedUnarchiver unarchiveObjectWithData:[NSKeyedArchiver archivedDataWithRootObject:fill]];
+    _CPTFillImage *fill = (_CPTFillImage *)[CPTFill fillWithImage:image];
 
-	STAssertEqualObjects(fill.fillImage, newFill.fillImage, @"Fill with image not equal");
+    _CPTFillImage *newFill = [NSKeyedUnarchiver unarchiveObjectWithData:[NSKeyedArchiver archivedDataWithRootObject:fill]];
+
+    STAssertEqualObjects(fill.fillImage, newFill.fillImage, @"Fill with image not equal");
 }
 
 @end

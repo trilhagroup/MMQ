@@ -3,17 +3,17 @@
 #import "CPTAxis.h"
 
 /**
- *	@brief An abstract class that draws grid lines for an axis.
+ *  @brief An abstract class that draws grid lines for an axis.
  **/
 @implementation CPTGridLines
 
-/**	@property axis
- *	@brief The axis.
+/** @property __cpt_weak CPTAxis *axis
+ *  @brief The axis.
  **/
 @synthesize axis;
 
-/**	@property major
- *	@brief If YES, draw the major grid lines, else draw the minor grid lines.
+/** @property BOOL major
+ *  @brief If @YES, draw the major grid lines, else draw the minor grid lines.
  **/
 @synthesize major;
 
@@ -25,87 +25,95 @@
 
 /** @brief Initializes a newly allocated CPTGridLines object with the provided frame rectangle.
  *
- *	This is the designated initializer. The initialized layer will have the following properties:
- *	- @link CPTGridLines::axis axis @endlink = <code>nil</code>
- *	- @link CPTGridLines::major major @endlink = <code>NO</code>
- *	- <code>needsDisplayOnBoundsChange</code> = <code>YES</code>
+ *  This is the designated initializer. The initialized layer will have the following properties:
+ *  - @ref axis = @nil
+ *  - @ref major = @NO
+ *  - @ref needsDisplayOnBoundsChange = @YES
  *
- *	@param newFrame The frame rectangle.
+ *  @param newFrame The frame rectangle.
  *  @return The initialized CPTGridLines object.
  **/
 -(id)initWithFrame:(CGRect)newFrame
 {
-	if ( (self = [super initWithFrame:newFrame]) ) {
-		axis  = nil;
-		major = NO;
+    if ( (self = [super initWithFrame:newFrame]) ) {
+        axis  = nil;
+        major = NO;
 
-		self.needsDisplayOnBoundsChange = YES;
-	}
-	return self;
+        self.needsDisplayOnBoundsChange = YES;
+    }
+    return self;
 }
 
-///	@}
+/// @}
+
+/// @cond
 
 -(id)initWithLayer:(id)layer
 {
-	if ( (self = [super initWithLayer:layer]) ) {
-		CPTGridLines *theLayer = (CPTGridLines *)layer;
+    if ( (self = [super initWithLayer:layer]) ) {
+        CPTGridLines *theLayer = (CPTGridLines *)layer;
 
-		axis  = theLayer->axis;
-		major = theLayer->major;
-	}
-	return self;
+        axis  = theLayer->axis;
+        major = theLayer->major;
+    }
+    return self;
 }
 
+/// @endcond
+
 #pragma mark -
-#pragma mark NSCoding methods
+#pragma mark NSCoding Methods
+
+/// @cond
 
 -(void)encodeWithCoder:(NSCoder *)coder
 {
-	[super encodeWithCoder:coder];
+    [super encodeWithCoder:coder];
 
-	[coder encodeConditionalObject:self.axis forKey:@"CPTGridLines.axis"];
-	[coder encodeBool:self.major forKey:@"CPTGridLines.major"];
+    [coder encodeConditionalObject:self.axis forKey:@"CPTGridLines.axis"];
+    [coder encodeBool:self.major forKey:@"CPTGridLines.major"];
 }
 
 -(id)initWithCoder:(NSCoder *)coder
 {
-	if ( (self = [super initWithCoder:coder]) ) {
-		axis  = [coder decodeObjectForKey:@"CPTGridLines.axis"];
-		major = [coder decodeBoolForKey:@"CPTGridLines.major"];
-	}
-	return self;
+    if ( (self = [super initWithCoder:coder]) ) {
+        axis  = [coder decodeObjectForKey:@"CPTGridLines.axis"];
+        major = [coder decodeBoolForKey:@"CPTGridLines.major"];
+    }
+    return self;
 }
+
+/// @endcond
 
 #pragma mark -
 #pragma mark Drawing
 
-///	@cond
+/// @cond
 
--(void)renderAsVectorInContext:(CGContextRef)theContext
+-(void)renderAsVectorInContext:(CGContextRef)context
 {
-	if ( self.hidden ) {
-		return;
-	}
+    if ( self.hidden ) {
+        return;
+    }
 
-	[self.axis drawGridLinesInContext:theContext isMajor:self.major];
+    [self.axis drawGridLinesInContext:context isMajor:self.major];
 }
 
-///	@endcond
+/// @endcond
 
 #pragma mark -
 #pragma mark Accessors
 
-///	@cond
+/// @cond
 
 -(void)setAxis:(CPTAxis *)newAxis
 {
-	if ( newAxis != axis ) {
-		axis = newAxis;
-		[self setNeedsDisplay];
-	}
+    if ( newAxis != axis ) {
+        axis = newAxis;
+        [self setNeedsDisplay];
+    }
 }
 
-///	@endcond
+/// @endcond
 
 @end

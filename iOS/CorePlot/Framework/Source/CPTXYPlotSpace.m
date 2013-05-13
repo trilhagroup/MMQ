@@ -3,18 +3,15 @@
 #import "CPTAxisSet.h"
 #import "CPTExceptions.h"
 #import "CPTGraph.h"
-#import "CPTGraph.h"
+#import "CPTGraphHostingView.h"
 #import "CPTMutablePlotRange.h"
 #import "CPTPlot.h"
 #import "CPTPlotArea.h"
-#import "CPTPlotArea.h"
 #import "CPTPlotAreaFrame.h"
 #import "CPTUtilities.h"
-#import "CPTXYAxis.h"
-#import "CPTXYAxisSet.h"
 #import "NSNumberExtensions.h"
 
-///	@cond
+/// @cond
 @interface CPTXYPlotSpace()
 
 -(CGFloat)viewCoordinateForViewLength:(CGFloat)viewLength linearPlotRange:(CPTPlotRange *)range plotCoordinateValue:(NSDecimal)plotCoord;
@@ -22,798 +19,987 @@
 
 -(CGFloat)viewCoordinateForViewLength:(CGFloat)viewLength logPlotRange:(CPTPlotRange *)range doublePrecisionPlotCoordinateValue:(double)plotCoord;
 
+-(NSDecimal)plotCoordinateForViewLength:(CGFloat)viewLength linearPlotRange:(CPTPlotRange *)range boundsLength:(CGFloat)boundsLength;
+-(double)doublePrecisionPlotCoordinateForViewLength:(CGFloat)viewLength linearPlotRange:(CPTPlotRange *)range boundsLength:(CGFloat)boundsLength;
+
+-(double)doublePrecisionPlotCoordinateForViewLength:(CGFloat)viewLength logPlotRange:(CPTPlotRange *)range boundsLength:(CGFloat)boundsLength;
+
 -(CPTPlotRange *)constrainRange:(CPTPlotRange *)existingRange toGlobalRange:(CPTPlotRange *)globalRange;
 
 @end
 
-///	@endcond
+/// @endcond
 
 #pragma mark -
 
 /**
- *	@brief A plot space using a two-dimensional cartesian coordinate system.
+ *  @brief A plot space using a two-dimensional cartesian coordinate system.
  *
- *	The @link CPTXYPlotSpace::xRange xRange @endlink and @link CPTXYPlotSpace::yRange
- *	yRange @endlink determine the mapping between data coordinates
- *	and the screen coordinates in the plot area. The "end" of a range is
- *	the location plus its length. Note that the length of a plot range can be negative, so
- *	the end point can have a lesser value than the starting location.
+ *  The @ref xRange and @ref yRange determine the mapping between data coordinates
+ *  and the screen coordinates in the plot area. The @quote{end} of a range is
+ *  the location plus its length. Note that the length of a plot range can be negative, so
+ *  the end point can have a lesser value than the starting location.
  *
- *	The global ranges constrain the values of the @link CPTXYPlotSpace::xRange
- *	xRange @endlink and @link CPTXYPlotSpace::yRange yRange @endlink.
- *	Whenever the global range is set (non-nil), the corresponding plot
- *	range will be adjusted so that it fits in the global range. When a new
- *	range is set to the plot range, it will be adjusted as needed to fit
- *	in the global range. This is useful for constraining scrolling, for
- *	instance.
+ *  The global ranges constrain the values of the @ref xRange and @ref yRange.
+ *  Whenever the global range is set (non-@nil), the corresponding plot
+ *  range will be adjusted so that it fits in the global range. When a new
+ *  range is set to the plot range, it will be adjusted as needed to fit
+ *  in the global range. This is useful for constraining scrolling, for
+ *  instance.
  **/
 @implementation CPTXYPlotSpace
 
-/** @property xRange
- *	@brief The range of the x coordinate. Defaults to a range with <code>location</code> zero (0) and a <code>length</code> of one (1).
+/** @property CPTPlotRange *xRange
+ *  @brief The range of the x coordinate. Defaults to a range with @link CPTPlotRange::location location @endlink zero (@num{0})
+ *  and a @link CPTPlotRange::length length @endlink of one (@num{1}).
  *
- *	The @link CPTPlotRange::location location @endlink of the <code>xRange</code>
- *	defines the data coordinate associated with the left edge of the plot area.
- *	Similarly, the @link CPTPlotRange::end end @endlink of the <code>xRange</code>
- *	defines the data coordinate associated with the right edge of the plot area.
+ *  The @link CPTPlotRange::location location @endlink of the @ref xRange
+ *  defines the data coordinate associated with the left edge of the plot area.
+ *  Similarly, the @link CPTPlotRange::end end @endlink of the @ref xRange
+ *  defines the data coordinate associated with the right edge of the plot area.
  **/
 @synthesize xRange;
 
-/** @property yRange
- *	@brief The range of the y coordinate. Defaults to a range with <code>location</code> zero (0) and a <code>length</code> of one (1).
+/** @property CPTPlotRange *yRange
+ *  @brief The range of the y coordinate. Defaults to a range with @link CPTPlotRange::location location @endlink zero (@num{0})
+ *  and a @link CPTPlotRange::length length @endlink of one (@num{1}).
  *
- *	The @link CPTPlotRange::location location @endlink of the <code>yRange</code>
- *	defines the data coordinate associated with the bottom edge of the plot area.
- *	Similarly, the @link CPTPlotRange::end end @endlink of the <code>yRange</code>
- *	defines the data coordinate associated with the top edge of the plot area.
+ *  The @link CPTPlotRange::location location @endlink of the @ref yRange
+ *  defines the data coordinate associated with the bottom edge of the plot area.
+ *  Similarly, the @link CPTPlotRange::end end @endlink of the @ref yRange
+ *  defines the data coordinate associated with the top edge of the plot area.
  **/
 @synthesize yRange;
 
-/** @property globalXRange
- *	@brief The global range of the x coordinate to which the @link CPTXYPlotSpace::xRange xRange @endlink is constrained.
+/** @property CPTPlotRange *globalXRange
+ *  @brief The global range of the x coordinate to which the @ref xRange is constrained.
  *
- *	If non-nil, the @link CPTXYPlotSpace::xRange xRange @endlink and any changes to it will
- *	be adjusted so that it always fits within the <code>globalXRange</code>.
- *  If <code>nil</code> (the default), there is no constraint on x.
+ *  If non-@nil, the @ref xRange and any changes to it will
+ *  be adjusted so that it always fits within the @ref globalXRange.
+ *  If @nil (the default), there is no constraint on x.
  **/
 @synthesize globalXRange;
 
-/** @property globalYRange
- *	@brief The global range of the y coordinate to which the @link CPTXYPlotSpace::yRange yRange @endlink is constrained.
+/** @property CPTPlotRange *globalYRange
+ *  @brief The global range of the y coordinate to which the @ref yRange is constrained.
  *
- *	If non-nil, the @link CPTXYPlotSpace::yRange yRange @endlink and any changes to it will
- *	be adjusted so that it always fits within the <code>globalYRange</code>.
- *  If <code>nil</code> (the default), there is no constraint on y.
+ *  If non-@nil, the @ref yRange and any changes to it will
+ *  be adjusted so that it always fits within the @ref globalYRange.
+ *  If @nil (the default), there is no constraint on y.
  **/
 @synthesize globalYRange;
 
-/** @property xScaleType
- *	@brief The scale type of the x coordinate. Defaults to @link CPTScaleType::CPTScaleTypeLinear CPTScaleTypeLinear @endlink.
+/** @property CPTScaleType xScaleType
+ *  @brief The scale type of the x coordinate. Defaults to #CPTScaleTypeLinear.
  **/
 @synthesize xScaleType;
 
-/** @property yScaleType
- *	@brief The scale type of the y coordinate. Defaults to @link CPTScaleType::CPTScaleTypeLinear CPTScaleTypeLinear @endlink.
+/** @property CPTScaleType yScaleType
+ *  @brief The scale type of the y coordinate. Defaults to #CPTScaleTypeLinear.
  **/
 @synthesize yScaleType;
 
 #pragma mark -
-#pragma mark Initialize/Deallocate
+#pragma mark Init/Dealloc
 
+/// @name Initialization
+/// @{
+
+/** @brief Initializes a newly allocated CPTXYPlotSpace object.
+ *
+ *  The initialized object will have the following properties:
+ *  - @ref xRange = [@num{0}, @num{1}]
+ *  - @ref yRange = [@num{0}, @num{1}]
+ *  - @ref globalXRange = @nil
+ *  - @ref globalYRange = @nil
+ *  - @ref xScaleType = #CPTScaleTypeLinear
+ *  - @ref yScaleType = #CPTScaleTypeLinear
+ *
+ *  @return The initialized object.
+ **/
 -(id)init
 {
-	if ( (self = [super init]) ) {
-		xRange		  = [[CPTPlotRange alloc] initWithLocation:CPTDecimalFromInteger(0) length:CPTDecimalFromInteger(1)];
-		yRange		  = [[CPTPlotRange alloc] initWithLocation:CPTDecimalFromInteger(0) length:CPTDecimalFromInteger(1)];
-		globalXRange  = nil;
-		globalYRange  = nil;
-		xScaleType	  = CPTScaleTypeLinear;
-		yScaleType	  = CPTScaleTypeLinear;
-		lastDragPoint = CGPointZero;
-		isDragging	  = NO;
-	}
-	return self;
+    if ( (self = [super init]) ) {
+        xRange        = [[CPTPlotRange alloc] initWithLocation:CPTDecimalFromInteger(0) length:CPTDecimalFromInteger(1)];
+        yRange        = [[CPTPlotRange alloc] initWithLocation:CPTDecimalFromInteger(0) length:CPTDecimalFromInteger(1)];
+        globalXRange  = nil;
+        globalYRange  = nil;
+        xScaleType    = CPTScaleTypeLinear;
+        yScaleType    = CPTScaleTypeLinear;
+        lastDragPoint = CGPointZero;
+        isDragging    = NO;
+    }
+    return self;
 }
+
+/// @}
+
+/// @cond
 
 -(void)dealloc
 {
-	[xRange release];
-	[yRange release];
-	[globalXRange release];
-	[globalYRange release];
-	[super dealloc];
+    [xRange release];
+    [yRange release];
+    [globalXRange release];
+    [globalYRange release];
+    [super dealloc];
 }
 
+/// @endcond
+
 #pragma mark -
-#pragma mark NSCoding methods
+#pragma mark NSCoding Methods
+
+/// @cond
 
 -(void)encodeWithCoder:(NSCoder *)coder
 {
-	[super encodeWithCoder:coder];
+    [super encodeWithCoder:coder];
 
-	[coder encodeObject:self.xRange forKey:@"CPTXYPlotSpace.xRange"];
-	[coder encodeObject:self.yRange forKey:@"CPTXYPlotSpace.yRange"];
-	[coder encodeObject:self.globalXRange forKey:@"CPTXYPlotSpace.globalXRange"];
-	[coder encodeObject:self.globalYRange forKey:@"CPTXYPlotSpace.globalYRange"];
-	[coder encodeInteger:self.xScaleType forKey:@"CPTXYPlotSpace.xScaleType"];
-	[coder encodeInteger:self.yScaleType forKey:@"CPTXYPlotSpace.yScaleType"];
+    [coder encodeObject:self.xRange forKey:@"CPTXYPlotSpace.xRange"];
+    [coder encodeObject:self.yRange forKey:@"CPTXYPlotSpace.yRange"];
+    [coder encodeObject:self.globalXRange forKey:@"CPTXYPlotSpace.globalXRange"];
+    [coder encodeObject:self.globalYRange forKey:@"CPTXYPlotSpace.globalYRange"];
+    [coder encodeInt:self.xScaleType forKey:@"CPTXYPlotSpace.xScaleType"];
+    [coder encodeInt:self.yScaleType forKey:@"CPTXYPlotSpace.yScaleType"];
 
-	// No need to archive these properties:
-	// lastDragPoint
-	// isDragging
+    // No need to archive these properties:
+    // lastDragPoint
+    // isDragging
 }
 
 -(id)initWithCoder:(NSCoder *)coder
 {
-	if ( (self = [super initWithCoder:coder]) ) {
-		xRange		 = [[coder decodeObjectForKey:@"CPTXYPlotSpace.xRange"] copy];
-		yRange		 = [[coder decodeObjectForKey:@"CPTXYPlotSpace.yRange"] copy];
-		globalXRange = [[coder decodeObjectForKey:@"CPTXYPlotSpace.globalXRange"] copy];
-		globalYRange = [[coder decodeObjectForKey:@"CPTXYPlotSpace.globalYRange"] copy];
-		xScaleType	 = [coder decodeIntegerForKey:@"CPTXYPlotSpace.xScaleType"];
-		yScaleType	 = [coder decodeIntegerForKey:@"CPTXYPlotSpace.yScaleType"];
+    if ( (self = [super initWithCoder:coder]) ) {
+        xRange       = [[coder decodeObjectForKey:@"CPTXYPlotSpace.xRange"] copy];
+        yRange       = [[coder decodeObjectForKey:@"CPTXYPlotSpace.yRange"] copy];
+        globalXRange = [[coder decodeObjectForKey:@"CPTXYPlotSpace.globalXRange"] copy];
+        globalYRange = [[coder decodeObjectForKey:@"CPTXYPlotSpace.globalYRange"] copy];
+        xScaleType   = (CPTScaleType)[coder decodeIntForKey : @"CPTXYPlotSpace.xScaleType"];
+        yScaleType   = (CPTScaleType)[coder decodeIntForKey : @"CPTXYPlotSpace.yScaleType"];
 
-		lastDragPoint = CGPointZero;
-		isDragging	  = NO;
-	}
-	return self;
+        lastDragPoint = CGPointZero;
+        isDragging    = NO;
+    }
+    return self;
 }
+
+/// @endcond
 
 #pragma mark -
 #pragma mark Ranges
 
-///	@cond
+/// @cond
 
 -(void)setPlotRange:(CPTPlotRange *)newRange forCoordinate:(CPTCoordinate)coordinate
 {
-	switch ( coordinate ) {
-		case CPTCoordinateX:
-			self.xRange = newRange;
-			break;
+    switch ( coordinate ) {
+        case CPTCoordinateX:
+            self.xRange = newRange;
+            break;
 
-		case CPTCoordinateY:
-			self.yRange = newRange;
-			break;
+        case CPTCoordinateY:
+            self.yRange = newRange;
+            break;
 
-		default:
-			// invalid coordinate--do nothing
-			break;
-	}
+        default:
+            // invalid coordinate--do nothing
+            break;
+    }
 }
 
 -(CPTPlotRange *)plotRangeForCoordinate:(CPTCoordinate)coordinate
 {
-	CPTPlotRange *theRange = nil;
+    CPTPlotRange *theRange = nil;
 
-	switch ( coordinate ) {
-		case CPTCoordinateX:
-			theRange = self.xRange;
-			break;
+    switch ( coordinate ) {
+        case CPTCoordinateX:
+            theRange = self.xRange;
+            break;
 
-		case CPTCoordinateY:
-			theRange = self.yRange;
-			break;
+        case CPTCoordinateY:
+            theRange = self.yRange;
+            break;
 
-		default:
-			// invalid coordinate
-			break;
-	}
+        default:
+            // invalid coordinate
+            break;
+    }
 
-	return theRange;
+    return theRange;
 }
 
 -(void)setScaleType:(CPTScaleType)newType forCoordinate:(CPTCoordinate)coordinate
 {
-	switch ( coordinate ) {
-		case CPTCoordinateX:
-			self.xScaleType = newType;
-			break;
+    switch ( coordinate ) {
+        case CPTCoordinateX:
+            self.xScaleType = newType;
+            break;
 
-		case CPTCoordinateY:
-			self.yScaleType = newType;
-			break;
+        case CPTCoordinateY:
+            self.yScaleType = newType;
+            break;
 
-		default:
-			// invalid coordinate--do nothing
-			break;
-	}
+        default:
+            // invalid coordinate--do nothing
+            break;
+    }
 }
 
 -(CPTScaleType)scaleTypeForCoordinate:(CPTCoordinate)coordinate
 {
-	CPTScaleType theScaleType = CPTScaleTypeLinear;
+    CPTScaleType theScaleType = CPTScaleTypeLinear;
 
-	switch ( coordinate ) {
-		case CPTCoordinateX:
-			theScaleType = self.xScaleType;
-			break;
+    switch ( coordinate ) {
+        case CPTCoordinateX:
+            theScaleType = self.xScaleType;
+            break;
 
-		case CPTCoordinateY:
-			theScaleType = self.yScaleType;
-			break;
+        case CPTCoordinateY:
+            theScaleType = self.yScaleType;
+            break;
 
-		default:
-			// invalid coordinate
-			break;
-	}
+        default:
+            // invalid coordinate
+            break;
+    }
 
-	return theScaleType;
+    return theScaleType;
 }
 
 -(void)setXRange:(CPTPlotRange *)range
 {
-	NSParameterAssert(range);
-	if ( ![range isEqualToRange:xRange] ) {
-		CPTPlotRange *constrainedRange = [self constrainRange:range toGlobalRange:self.globalXRange];
-		[xRange release];
-		xRange = [constrainedRange copy];
-		[[NSNotificationCenter defaultCenter] postNotificationName:CPTPlotSpaceCoordinateMappingDidChangeNotification object:self];
-		if ( [self.delegate respondsToSelector:@selector(plotSpace:didChangePlotRangeForCoordinate:)] ) {
-			[self.delegate plotSpace:self didChangePlotRangeForCoordinate:CPTCoordinateX];
-		}
-		if ( self.graph ) {
-			[[NSNotificationCenter defaultCenter] postNotificationName:CPTGraphNeedsRedrawNotification object:self.graph];
-		}
-	}
+    NSParameterAssert(range);
+
+    if ( ![range isEqualToRange:xRange] ) {
+        CPTPlotRange *constrainedRange = [self constrainRange:range toGlobalRange:self.globalXRange];
+        [xRange release];
+        xRange = [constrainedRange copy];
+
+        [[NSNotificationCenter defaultCenter] postNotificationName:CPTPlotSpaceCoordinateMappingDidChangeNotification
+                                                            object:self];
+
+        id<CPTPlotSpaceDelegate> theDelegate = self.delegate;
+        if ( [theDelegate respondsToSelector:@selector(plotSpace:didChangePlotRangeForCoordinate:)] ) {
+            [theDelegate plotSpace:self didChangePlotRangeForCoordinate:CPTCoordinateX];
+        }
+
+        CPTGraph *theGraph = self.graph;
+        if ( theGraph ) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:CPTGraphNeedsRedrawNotification
+                                                                object:theGraph];
+        }
+    }
 }
 
 -(void)setYRange:(CPTPlotRange *)range
 {
-	NSParameterAssert(range);
-	if ( ![range isEqualToRange:yRange] ) {
-		CPTPlotRange *constrainedRange = [self constrainRange:range toGlobalRange:self.globalYRange];
-		[yRange release];
-		yRange = [constrainedRange copy];
-		[[NSNotificationCenter defaultCenter] postNotificationName:CPTPlotSpaceCoordinateMappingDidChangeNotification object:self];
-		if ( [self.delegate respondsToSelector:@selector(plotSpace:didChangePlotRangeForCoordinate:)] ) {
-			[self.delegate plotSpace:self didChangePlotRangeForCoordinate:CPTCoordinateY];
-		}
-		if ( self.graph ) {
-			[[NSNotificationCenter defaultCenter] postNotificationName:CPTGraphNeedsRedrawNotification object:self.graph];
-		}
-	}
+    NSParameterAssert(range);
+
+    if ( ![range isEqualToRange:yRange] ) {
+        CPTPlotRange *constrainedRange = [self constrainRange:range toGlobalRange:self.globalYRange];
+        [yRange release];
+        yRange = [constrainedRange copy];
+
+        [[NSNotificationCenter defaultCenter] postNotificationName:CPTPlotSpaceCoordinateMappingDidChangeNotification
+                                                            object:self];
+
+        id<CPTPlotSpaceDelegate> theDelegate = self.delegate;
+        if ( [theDelegate respondsToSelector:@selector(plotSpace:didChangePlotRangeForCoordinate:)] ) {
+            [theDelegate plotSpace:self didChangePlotRangeForCoordinate:CPTCoordinateY];
+        }
+
+        CPTGraph *theGraph = self.graph;
+        if ( theGraph ) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:CPTGraphNeedsRedrawNotification
+                                                                object:theGraph];
+        }
+    }
 }
 
 -(CPTPlotRange *)constrainRange:(CPTPlotRange *)existingRange toGlobalRange:(CPTPlotRange *)globalRange
 {
-	if ( !globalRange ) {
-		return existingRange;
-	}
-	if ( !existingRange ) {
-		return nil;
-	}
+    if ( !globalRange ) {
+        return existingRange;
+    }
+    if ( !existingRange ) {
+        return nil;
+    }
 
-	if ( CPTDecimalGreaterThanOrEqualTo(existingRange.length, globalRange.length) ) {
-		return [[globalRange copy] autorelease];
-	}
-	else {
-		CPTMutablePlotRange *newRange = [[existingRange mutableCopy] autorelease];
-		[newRange shiftEndToFitInRange:globalRange];
-		[newRange shiftLocationToFitInRange:globalRange];
-		return newRange;
-	}
+    if ( CPTDecimalGreaterThanOrEqualTo(existingRange.length, globalRange.length) ) {
+        return [[globalRange copy] autorelease];
+    }
+    else {
+        CPTMutablePlotRange *newRange = [[existingRange mutableCopy] autorelease];
+        [newRange shiftEndToFitInRange:globalRange];
+        [newRange shiftLocationToFitInRange:globalRange];
+        return newRange;
+    }
 }
 
 -(void)setGlobalXRange:(CPTPlotRange *)newRange
 {
-	if ( ![newRange isEqualToRange:globalXRange] ) {
-		[globalXRange release];
-		globalXRange = [newRange copy];
-		self.xRange	 = [self constrainRange:self.xRange toGlobalRange:globalXRange];
-	}
+    if ( ![newRange isEqualToRange:globalXRange] ) {
+        [globalXRange release];
+        globalXRange = [newRange copy];
+        self.xRange  = [self constrainRange:self.xRange toGlobalRange:globalXRange];
+    }
 }
 
 -(void)setGlobalYRange:(CPTPlotRange *)newRange
 {
-	if ( ![newRange isEqualToRange:globalYRange] ) {
-		[globalYRange release];
-		globalYRange = [newRange copy];
-		self.yRange	 = [self constrainRange:self.yRange toGlobalRange:globalYRange];
-	}
+    if ( ![newRange isEqualToRange:globalYRange] ) {
+        [globalYRange release];
+        globalYRange = [newRange copy];
+        self.yRange  = [self constrainRange:self.yRange toGlobalRange:globalYRange];
+    }
 }
 
 -(void)scaleToFitPlots:(NSArray *)plots
 {
-	if ( plots.count == 0 ) {
-		return;
-	}
+    if ( plots.count == 0 ) {
+        return;
+    }
 
-	// Determine union of ranges
-	CPTMutablePlotRange *unionXRange = nil;
-	CPTMutablePlotRange *unionYRange = nil;
-	for ( CPTPlot *plot in plots ) {
-		CPTPlotRange *currentXRange = [plot plotRangeForCoordinate:CPTCoordinateX];
-		CPTPlotRange *currentYRange = [plot plotRangeForCoordinate:CPTCoordinateY];
-		if ( !unionXRange ) {
-			unionXRange = [currentXRange mutableCopy];
-		}
-		if ( !unionYRange ) {
-			unionYRange = [currentYRange mutableCopy];
-		}
-		[unionXRange unionPlotRange:currentXRange];
-		[unionYRange unionPlotRange:currentYRange];
-	}
+    // Determine union of ranges
+    CPTMutablePlotRange *unionXRange = nil;
+    CPTMutablePlotRange *unionYRange = nil;
+    for ( CPTPlot *plot in plots ) {
+        CPTPlotRange *currentXRange = [plot plotRangeForCoordinate:CPTCoordinateX];
+        CPTPlotRange *currentYRange = [plot plotRangeForCoordinate:CPTCoordinateY];
+        if ( !unionXRange ) {
+            unionXRange = [currentXRange mutableCopy];
+        }
+        if ( !unionYRange ) {
+            unionYRange = [currentYRange mutableCopy];
+        }
+        [unionXRange unionPlotRange:currentXRange];
+        [unionYRange unionPlotRange:currentYRange];
+    }
 
-	// Set range
-	NSDecimal zero = CPTDecimalFromInteger(0);
-	if ( unionXRange && !CPTDecimalEquals(unionXRange.length, zero) ) {
-		self.xRange = unionXRange;
-	}
-	if ( unionYRange && !CPTDecimalEquals(unionYRange.length, zero) ) {
-		self.yRange = unionYRange;
-	}
+    // Set range
+    NSDecimal zero = CPTDecimalFromInteger(0);
+    if ( unionXRange ) {
+        if ( CPTDecimalEquals(unionXRange.length, zero) ) {
+            [unionXRange unionPlotRange:self.xRange];
+        }
+        self.xRange = unionXRange;
+    }
+    if ( unionYRange ) {
+        if ( CPTDecimalEquals(unionYRange.length, zero) ) {
+            [unionYRange unionPlotRange:self.yRange];
+        }
+        self.yRange = unionYRange;
+    }
 
-	[unionXRange release];
-	[unionYRange release];
+    [unionXRange release];
+    [unionYRange release];
 }
 
 -(void)setXScaleType:(CPTScaleType)newScaleType
 {
-	if ( newScaleType != xScaleType ) {
-		xScaleType = newScaleType;
-		if ( self.graph ) {
-			[[NSNotificationCenter defaultCenter] postNotificationName:CPTGraphNeedsRedrawNotification object:self.graph];
-		}
-	}
+    if ( newScaleType != xScaleType ) {
+        xScaleType = newScaleType;
+
+        [[NSNotificationCenter defaultCenter] postNotificationName:CPTPlotSpaceCoordinateMappingDidChangeNotification
+                                                            object:self];
+
+        CPTGraph *theGraph = self.graph;
+        if ( theGraph ) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:CPTGraphNeedsRedrawNotification
+                                                                object:theGraph];
+        }
+    }
 }
 
 -(void)setYScaleType:(CPTScaleType)newScaleType
 {
-	if ( newScaleType != yScaleType ) {
-		yScaleType = newScaleType;
-		if ( self.graph ) {
-			[[NSNotificationCenter defaultCenter] postNotificationName:CPTGraphNeedsRedrawNotification object:self.graph];
-		}
-	}
+    if ( newScaleType != yScaleType ) {
+        yScaleType = newScaleType;
+
+        [[NSNotificationCenter defaultCenter] postNotificationName:CPTPlotSpaceCoordinateMappingDidChangeNotification
+                                                            object:self];
+        CPTGraph *theGraph = self.graph;
+        if ( theGraph ) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:CPTGraphNeedsRedrawNotification
+                                                                object:theGraph];
+        }
+    }
 }
 
-///	@endcond
+/// @endcond
 
 #pragma mark -
-#pragma mark Point Conversion
+#pragma mark Point Conversion (private utilities)
 
-///	@cond
+/// @cond
 
 // Linear
 -(CGFloat)viewCoordinateForViewLength:(CGFloat)viewLength linearPlotRange:(CPTPlotRange *)range plotCoordinateValue:(NSDecimal)plotCoord
 {
-	if ( !range ) {
-		return 0.0;
-	}
+    if ( !range ) {
+        return CPTFloat(0.0);
+    }
 
-	NSDecimal factor = CPTDecimalDivide(CPTDecimalSubtract(plotCoord, range.location), range.length);
-	if ( NSDecimalIsNotANumber(&factor) ) {
-		factor = CPTDecimalFromInteger(0);
-	}
+    NSDecimal factor = CPTDecimalDivide(CPTDecimalSubtract(plotCoord, range.location), range.length);
+    if ( NSDecimalIsNotANumber(&factor) ) {
+        factor = CPTDecimalFromInteger(0);
+    }
 
-	CGFloat viewCoordinate = viewLength * [[NSDecimalNumber decimalNumberWithDecimal:factor] cgFloatValue];
+    CGFloat viewCoordinate = viewLength * [[NSDecimalNumber decimalNumberWithDecimal:factor] cgFloatValue];
 
-	return viewCoordinate;
+    return viewCoordinate;
 }
 
--(CGFloat)viewCoordinateForViewLength:(CGFloat)viewLength linearPlotRange:(CPTPlotRange *)range doublePrecisionPlotCoordinateValue:(double)plotCoord;
+-(CGFloat)viewCoordinateForViewLength:(CGFloat)viewLength linearPlotRange:(CPTPlotRange *)range doublePrecisionPlotCoordinateValue:(double)plotCoord
 {
-	if ( !range || (range.lengthDouble == 0.0) ) {
-		return 0.0;
-	}
-	return viewLength * ( (plotCoord - range.locationDouble) / range.lengthDouble );
+    if ( !range || (range.lengthDouble == 0.0) ) {
+        return CPTFloat(0.0);
+    }
+    return viewLength * (CGFloat)( (plotCoord - range.locationDouble) / range.lengthDouble );
 }
 
-// Natural log (only one version since there are no trancendental functions for NSDecimal)
--(CGFloat)viewCoordinateForViewLength:(CGFloat)viewLength logPlotRange:(CPTPlotRange *)range doublePrecisionPlotCoordinateValue:(double)plotCoord;
+-(NSDecimal)plotCoordinateForViewLength:(CGFloat)viewLength linearPlotRange:(CPTPlotRange *)range boundsLength:(CGFloat)boundsLength
 {
-	if ( (range.minLimitDouble <= 0.0) || (range.maxLimitDouble <= 0.0) || (plotCoord <= 0.0) ) {
-		return 0.0;
-	}
+    if ( boundsLength == 0.0 ) {
+        return CPTDecimalFromInteger(0);
+    }
 
-	double logLoc	= log10(range.locationDouble);
-	double logCoord = log10(plotCoord);
-	double logEnd	= log10(range.endDouble);
+    NSDecimal vLength = CPTDecimalFromDouble(viewLength);
+    NSDecimal bLength = CPTDecimalFromDouble(boundsLength);
 
-	return viewLength * (logCoord - logLoc) / (logEnd - logLoc);
+    NSDecimal location = range.location;
+    NSDecimal length   = range.length;
+
+    NSDecimal coordinate;
+    NSDecimalDivide(&coordinate, &vLength, &bLength, NSRoundPlain);
+    NSDecimalMultiply(&coordinate, &coordinate, &(length), NSRoundPlain);
+    NSDecimalAdd(&coordinate, &coordinate, &(location), NSRoundPlain);
+
+    return coordinate;
 }
+
+-(double)doublePrecisionPlotCoordinateForViewLength:(CGFloat)viewLength linearPlotRange:(CPTPlotRange *)range boundsLength:(CGFloat)boundsLength
+{
+    if ( boundsLength == 0.0 ) {
+        return 0.0;
+    }
+
+    double coordinate = viewLength / boundsLength;
+    coordinate *= range.lengthDouble;
+    coordinate += range.locationDouble;
+
+    return coordinate;
+}
+
+// Log (only one version since there are no transcendental functions for NSDecimal)
+-(CGFloat)viewCoordinateForViewLength:(CGFloat)viewLength logPlotRange:(CPTPlotRange *)range doublePrecisionPlotCoordinateValue:(double)plotCoord
+{
+    if ( (range.minLimitDouble <= 0.0) || (range.maxLimitDouble <= 0.0) || (plotCoord <= 0.0) ) {
+        return CPTFloat(0.0);
+    }
+
+    double logLoc   = log10(range.locationDouble);
+    double logCoord = log10(plotCoord);
+    double logEnd   = log10(range.endDouble);
+
+    return viewLength * (CGFloat)( (logCoord - logLoc) / (logEnd - logLoc) );
+}
+
+-(double)doublePrecisionPlotCoordinateForViewLength:(CGFloat)viewLength logPlotRange:(CPTPlotRange *)range boundsLength:(CGFloat)boundsLength
+{
+    if ( boundsLength == 0.0 ) {
+        return 0.0;
+    }
+
+    double logLoc = log10(range.locationDouble);
+    double logEnd = log10(range.endDouble);
+
+    double coordinate = viewLength * (logEnd - logLoc) / boundsLength + logLoc;
+
+    return pow(10.0, coordinate);
+}
+
+/// @endcond
+
+#pragma mark -
+#pragma mark Point Conversion
+
+/// @cond
 
 // Plot area view point for plot point
 -(CGPoint)plotAreaViewPointForPlotPoint:(NSDecimal *)plotPoint
 {
-	CGSize layerSize	  = CGSizeZero;
-	CPTPlotArea *plotArea = self.graph.plotAreaFrame.plotArea;
+    CGSize layerSize;
+    CPTPlotArea *plotArea = self.graph.plotAreaFrame.plotArea;
 
-	if ( plotArea ) {
-		layerSize = plotArea.bounds.size;
-	}
-	else {
-		return CGPointZero;
-	}
+    if ( plotArea ) {
+        layerSize = plotArea.bounds.size;
+    }
+    else {
+        return CGPointZero;
+    }
 
-	CGFloat viewX = 0.0;
-	CGFloat viewY = 0.0;
+    CGFloat viewX;
+    CGFloat viewY;
 
-	switch ( self.xScaleType ) {
-		case CPTScaleTypeLinear:
-			viewX = [self viewCoordinateForViewLength:layerSize.width linearPlotRange:self.xRange plotCoordinateValue:plotPoint[CPTCoordinateX]];
-			break;
+    switch ( self.xScaleType ) {
+        case CPTScaleTypeLinear:
+            viewX = [self viewCoordinateForViewLength:layerSize.width linearPlotRange:self.xRange plotCoordinateValue:plotPoint[CPTCoordinateX]];
+            break;
 
-		case CPTScaleTypeLog:
-		{
-			double x = [[NSDecimalNumber decimalNumberWithDecimal:plotPoint[CPTCoordinateX]] doubleValue];
-			viewX = [self viewCoordinateForViewLength:layerSize.width logPlotRange:self.xRange doublePrecisionPlotCoordinateValue:x];
-		}
-		break;
+        case CPTScaleTypeLog:
+        {
+            double x = [[NSDecimalNumber decimalNumberWithDecimal:plotPoint[CPTCoordinateX]] doubleValue];
+            viewX = [self viewCoordinateForViewLength:layerSize.width logPlotRange:self.xRange doublePrecisionPlotCoordinateValue:x];
+        }
+        break;
 
-		default:
-			[NSException raise:CPTException format:@"Scale type not supported in CPTXYPlotSpace"];
-	}
+        default:
+            [NSException raise:CPTException format:@"Scale type not supported in CPTXYPlotSpace"];
+    }
 
-	switch ( self.yScaleType ) {
-		case CPTScaleTypeLinear:
-			viewY = [self viewCoordinateForViewLength:layerSize.height linearPlotRange:self.yRange plotCoordinateValue:plotPoint[CPTCoordinateY]];
-			break;
+    switch ( self.yScaleType ) {
+        case CPTScaleTypeLinear:
+            viewY = [self viewCoordinateForViewLength:layerSize.height linearPlotRange:self.yRange plotCoordinateValue:plotPoint[CPTCoordinateY]];
+            break;
 
-		case CPTScaleTypeLog:
-		{
-			double y = [[NSDecimalNumber decimalNumberWithDecimal:plotPoint[CPTCoordinateY]] doubleValue];
-			viewY = [self viewCoordinateForViewLength:layerSize.height logPlotRange:self.yRange doublePrecisionPlotCoordinateValue:y];
-		}
-		break;
+        case CPTScaleTypeLog:
+        {
+            double y = [[NSDecimalNumber decimalNumberWithDecimal:plotPoint[CPTCoordinateY]] doubleValue];
+            viewY = [self viewCoordinateForViewLength:layerSize.height logPlotRange:self.yRange doublePrecisionPlotCoordinateValue:y];
+        }
+        break;
 
-		default:
-			[NSException raise:CPTException format:@"Scale type not supported in CPTXYPlotSpace"];
-	}
+        default:
+            [NSException raise:CPTException format:@"Scale type not supported in CPTXYPlotSpace"];
+    }
 
-	return CGPointMake(viewX, viewY);
+    return CPTPointMake(viewX, viewY);
 }
 
 -(CGPoint)plotAreaViewPointForDoublePrecisionPlotPoint:(double *)plotPoint
 {
-	CGSize layerSize	  = CGSizeZero;
-	CPTPlotArea *plotArea = self.graph.plotAreaFrame.plotArea;
+    CGSize layerSize;
+    CPTPlotArea *plotArea = self.graph.plotAreaFrame.plotArea;
 
-	if ( plotArea ) {
-		layerSize = plotArea.bounds.size;
-	}
-	else {
-		return CGPointZero;
-	}
+    if ( plotArea ) {
+        layerSize = plotArea.bounds.size;
+    }
+    else {
+        return CGPointZero;
+    }
 
-	CGFloat viewX = 0.0;
-	CGFloat viewY = 0.0;
+    CGFloat viewX;
+    CGFloat viewY;
 
-	switch ( self.xScaleType ) {
-		case CPTScaleTypeLinear:
-			viewX = [self viewCoordinateForViewLength:layerSize.width linearPlotRange:self.xRange doublePrecisionPlotCoordinateValue:plotPoint[CPTCoordinateX]];
-			break;
+    switch ( self.xScaleType ) {
+        case CPTScaleTypeLinear:
+            viewX = [self viewCoordinateForViewLength:layerSize.width linearPlotRange:self.xRange doublePrecisionPlotCoordinateValue:plotPoint[CPTCoordinateX]];
+            break;
 
-		case CPTScaleTypeLog:
-			viewX = [self viewCoordinateForViewLength:layerSize.width logPlotRange:self.xRange doublePrecisionPlotCoordinateValue:plotPoint[CPTCoordinateX]];
-			break;
+        case CPTScaleTypeLog:
+            viewX = [self viewCoordinateForViewLength:layerSize.width logPlotRange:self.xRange doublePrecisionPlotCoordinateValue:plotPoint[CPTCoordinateX]];
+            break;
 
-		default:
-			[NSException raise:CPTException format:@"Scale type not supported in CPTXYPlotSpace"];
-	}
+        default:
+            [NSException raise:CPTException format:@"Scale type not supported in CPTXYPlotSpace"];
+    }
 
-	switch ( self.yScaleType ) {
-		case CPTScaleTypeLinear:
-			viewY = [self viewCoordinateForViewLength:layerSize.height linearPlotRange:self.yRange doublePrecisionPlotCoordinateValue:plotPoint[CPTCoordinateY]];
-			break;
+    switch ( self.yScaleType ) {
+        case CPTScaleTypeLinear:
+            viewY = [self viewCoordinateForViewLength:layerSize.height linearPlotRange:self.yRange doublePrecisionPlotCoordinateValue:plotPoint[CPTCoordinateY]];
+            break;
 
-		case CPTScaleTypeLog:
-			viewY = [self viewCoordinateForViewLength:layerSize.height logPlotRange:self.yRange doublePrecisionPlotCoordinateValue:plotPoint[CPTCoordinateY]];
-			break;
+        case CPTScaleTypeLog:
+            viewY = [self viewCoordinateForViewLength:layerSize.height logPlotRange:self.yRange doublePrecisionPlotCoordinateValue:plotPoint[CPTCoordinateY]];
+            break;
 
-		default:
-			[NSException raise:CPTException format:@"Scale type not supported in CPTXYPlotSpace"];
-	}
+        default:
+            [NSException raise:CPTException format:@"Scale type not supported in CPTXYPlotSpace"];
+    }
 
-	return CGPointMake(viewX, viewY);
+    return CPTPointMake(viewX, viewY);
 }
 
 // Plot point for view point
 -(void)plotPoint:(NSDecimal *)plotPoint forPlotAreaViewPoint:(CGPoint)point
 {
-	CGSize boundsSize	  = CGSizeZero;
-	CPTPlotArea *plotArea = self.graph.plotAreaFrame.plotArea;
+    CGSize boundsSize;
+    CPTPlotArea *plotArea = self.graph.plotAreaFrame.plotArea;
 
-	if ( plotArea ) {
-		boundsSize = plotArea.bounds.size;
-	}
-	else {
-		NSDecimal zero = CPTDecimalFromInteger(0);
-		plotPoint[CPTCoordinateX] = zero;
-		plotPoint[CPTCoordinateY] = zero;
-		return;
-	}
+    if ( plotArea ) {
+        boundsSize = plotArea.bounds.size;
+    }
+    else {
+        NSDecimal zero = CPTDecimalFromInteger(0);
+        plotPoint[CPTCoordinateX] = zero;
+        plotPoint[CPTCoordinateY] = zero;
+        return;
+    }
 
-	NSDecimal pointx  = CPTDecimalFromDouble(point.x);
-	NSDecimal pointy  = CPTDecimalFromDouble(point.y);
-	NSDecimal boundsw = CPTDecimalFromDouble(boundsSize.width);
-	NSDecimal boundsh = CPTDecimalFromDouble(boundsSize.height);
+    switch ( self.xScaleType ) {
+        case CPTScaleTypeLinear:
+            plotPoint[CPTCoordinateX] = [self plotCoordinateForViewLength:point.x linearPlotRange:self.xRange boundsLength:boundsSize.width];
+            break;
 
-	// get the xRange's location and length
-	NSDecimal xLocation = xRange.location;
-	NSDecimal xLength	= xRange.length;
+        case CPTScaleTypeLog:
+            plotPoint[CPTCoordinateX] = CPTDecimalFromDouble([self doublePrecisionPlotCoordinateForViewLength:point.x logPlotRange:self.xRange boundsLength:boundsSize.width]);
+            break;
 
-	NSDecimal x;
-	NSDecimalDivide(&x, &pointx, &boundsw, NSRoundPlain);
-	NSDecimalMultiply(&x, &x, &(xLength), NSRoundPlain);
-	NSDecimalAdd(&x, &x, &(xLocation), NSRoundPlain);
+        default:
+            [NSException raise:CPTException format:@"Scale type not supported in CPTXYPlotSpace"];
+    }
 
-	// get the yRange's location and length
-	NSDecimal yLocation = yRange.location;
-	NSDecimal yLength	= yRange.length;
+    switch ( self.yScaleType ) {
+        case CPTScaleTypeLinear:
+            plotPoint[CPTCoordinateY] = [self plotCoordinateForViewLength:point.y linearPlotRange:self.yRange boundsLength:boundsSize.height];
+            break;
 
-	NSDecimal y;
-	NSDecimalDivide(&y, &pointy, &boundsh, NSRoundPlain);
-	NSDecimalMultiply(&y, &y, &(yLength), NSRoundPlain);
-	NSDecimalAdd(&y, &y, &(yLocation), NSRoundPlain);
+        case CPTScaleTypeLog:
+            plotPoint[CPTCoordinateY] = CPTDecimalFromDouble([self doublePrecisionPlotCoordinateForViewLength:point.y logPlotRange:self.yRange boundsLength:boundsSize.height]);
+            break;
 
-	plotPoint[CPTCoordinateX] = x;
-	plotPoint[CPTCoordinateY] = y;
+        default:
+            [NSException raise:CPTException format:@"Scale type not supported in CPTXYPlotSpace"];
+    }
 }
 
 -(void)doublePrecisionPlotPoint:(double *)plotPoint forPlotAreaViewPoint:(CGPoint)point
 {
-	CGSize boundsSize	  = CGSizeZero;
-	CPTPlotArea *plotArea = self.graph.plotAreaFrame.plotArea;
+    CGSize boundsSize;
+    CPTPlotArea *plotArea = self.graph.plotAreaFrame.plotArea;
 
-	if ( plotArea ) {
-		boundsSize = plotArea.bounds.size;
-	}
-	else {
-		plotPoint[CPTCoordinateX] = 0.0;
-		plotPoint[CPTCoordinateY] = 0.0;
-		return;
-	}
+    if ( plotArea ) {
+        boundsSize = plotArea.bounds.size;
+    }
+    else {
+        plotPoint[CPTCoordinateX] = 0.0;
+        plotPoint[CPTCoordinateY] = 0.0;
+        return;
+    }
 
-	double x = point.x / boundsSize.width;
-	x *= xRange.lengthDouble;
-	x += xRange.locationDouble;
+    switch ( self.xScaleType ) {
+        case CPTScaleTypeLinear:
+            plotPoint[CPTCoordinateX] = [self doublePrecisionPlotCoordinateForViewLength:point.x linearPlotRange:self.xRange boundsLength:boundsSize.width];
+            break;
 
-	double y = point.y / boundsSize.height;
-	y *= yRange.lengthDouble;
-	y += yRange.locationDouble;
+        case CPTScaleTypeLog:
+            plotPoint[CPTCoordinateX] = [self doublePrecisionPlotCoordinateForViewLength:point.x logPlotRange:self.xRange boundsLength:boundsSize.width];
+            break;
 
-	plotPoint[CPTCoordinateX] = x;
-	plotPoint[CPTCoordinateY] = y;
+        default:
+            [NSException raise:CPTException format:@"Scale type not supported in CPTXYPlotSpace"];
+    }
+
+    switch ( self.yScaleType ) {
+        case CPTScaleTypeLinear:
+            plotPoint[CPTCoordinateY] = [self doublePrecisionPlotCoordinateForViewLength:point.y linearPlotRange:self.yRange boundsLength:boundsSize.height];
+            break;
+
+        case CPTScaleTypeLog:
+            plotPoint[CPTCoordinateY] = [self doublePrecisionPlotCoordinateForViewLength:point.y logPlotRange:self.yRange boundsLength:boundsSize.height];
+            break;
+
+        default:
+            [NSException raise:CPTException format:@"Scale type not supported in CPTXYPlotSpace"];
+    }
 }
 
-///	@endcond
+// Plot area view point for event
+-(CGPoint)plotAreaViewPointForEvent:(CPTNativeEvent *)event
+{
+    CGPoint plotAreaViewPoint = CGPointZero;
+
+    CPTGraph *theGraph                  = self.graph;
+    CPTGraphHostingView *theHostingView = theGraph.hostingView;
+    CPTPlotArea *thePlotArea            = theGraph.plotAreaFrame.plotArea;
+
+    if ( theHostingView && thePlotArea ) {
+#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+        CGPoint interactionPoint = [[[event touchesForView:theHostingView] anyObject] locationInView:theHostingView];
+        if ( theHostingView.collapsesLayers ) {
+            plotAreaViewPoint.x = interactionPoint.x;
+            plotAreaViewPoint.y = theHostingView.frame.size.height - interactionPoint.y;
+        }
+        else {
+            plotAreaViewPoint = [theHostingView.layer convertPoint:interactionPoint toLayer:thePlotArea];
+        }
+#else
+        CGPoint interactionPoint = NSPointToCGPoint([theHostingView convertPoint:[event locationInWindow] fromView:nil]);
+        plotAreaViewPoint = [theHostingView.layer convertPoint:interactionPoint toLayer:thePlotArea];
+#endif
+    }
+
+    return plotAreaViewPoint;
+}
+
+// Plot point for event
+-(void)plotPoint:(NSDecimal *)plotPoint forEvent:(CPTNativeEvent *)event
+{
+    [self plotPoint:plotPoint forPlotAreaViewPoint:[self plotAreaViewPointForEvent:event]];
+}
+
+-(void)doublePrecisionPlotPoint:(double *)plotPoint forEvent:(CPTNativeEvent *)event
+{
+    [self doublePrecisionPlotPoint:plotPoint forPlotAreaViewPoint:[self plotAreaViewPointForEvent:event]];
+}
+
+/// @endcond
 
 #pragma mark -
 #pragma mark Scaling
 
-///	@cond
+/// @cond
 
 -(void)scaleBy:(CGFloat)interactionScale aboutPoint:(CGPoint)plotAreaPoint
 {
-	if ( !self.graph.plotAreaFrame || (interactionScale <= 1.e-6) ) {
-		return;
-	}
-	if ( ![self.graph.plotAreaFrame.plotArea containsPoint:plotAreaPoint] ) {
-		return;
-	}
+    CPTPlotArea *plotArea = self.graph.plotAreaFrame.plotArea;
 
-	// Ask the delegate if it is OK
-	BOOL shouldScale = YES;
-	if ( [self.delegate respondsToSelector:@selector(plotSpace:shouldScaleBy:aboutPoint:)] ) {
-		shouldScale = [self.delegate plotSpace:self shouldScaleBy:interactionScale aboutPoint:plotAreaPoint];
-	}
-	if ( !shouldScale ) {
-		return;
-	}
+    if ( !plotArea || (interactionScale <= 1.e-6) ) {
+        return;
+    }
+    if ( ![plotArea containsPoint:plotAreaPoint] ) {
+        return;
+    }
 
-	// Determine point in plot coordinates
-	NSDecimal const decimalScale = CPTDecimalFromCGFloat(interactionScale);
-	NSDecimal plotInteractionPoint[2];
-	[self plotPoint:plotInteractionPoint forPlotAreaViewPoint:plotAreaPoint];
+    // Ask the delegate if it is OK
+    id<CPTPlotSpaceDelegate> theDelegate = self.delegate;
 
-	// Cache old ranges
-	CPTPlotRange *oldRangeX = self.xRange;
-	CPTPlotRange *oldRangeY = self.yRange;
+    BOOL shouldScale = YES;
+    if ( [theDelegate respondsToSelector:@selector(plotSpace:shouldScaleBy:aboutPoint:)] ) {
+        shouldScale = [theDelegate plotSpace:self shouldScaleBy:interactionScale aboutPoint:plotAreaPoint];
+    }
+    if ( !shouldScale ) {
+        return;
+    }
 
-	// Lengths are scaled by the pinch gesture inverse proportional
-	NSDecimal newLengthX = CPTDecimalDivide(oldRangeX.length, decimalScale);
-	NSDecimal newLengthY = CPTDecimalDivide(oldRangeY.length, decimalScale);
+    // Determine point in plot coordinates
+    NSDecimal const decimalScale = CPTDecimalFromCGFloat(interactionScale);
+    NSDecimal plotInteractionPoint[2];
+    [self plotPoint:plotInteractionPoint forPlotAreaViewPoint:plotAreaPoint];
 
-	// New locations
-	NSDecimal newLocationX;
-	if ( CPTDecimalGreaterThanOrEqualTo( oldRangeX.length, CPTDecimalFromInteger(0) ) ) {
-		NSDecimal oldFirstLengthX = CPTDecimalSubtract(plotInteractionPoint[CPTCoordinateX], oldRangeX.minLimit); // x - minX
-		NSDecimal newFirstLengthX = CPTDecimalDivide(oldFirstLengthX, decimalScale);                              // (x - minX) / scale
-		newLocationX = CPTDecimalSubtract(plotInteractionPoint[CPTCoordinateX], newFirstLengthX);
-	}
-	else {
-		NSDecimal oldSecondLengthX = CPTDecimalSubtract(oldRangeX.maxLimit, plotInteractionPoint[0]); // maxX - x
-		NSDecimal newSecondLengthX = CPTDecimalDivide(oldSecondLengthX, decimalScale);                // (maxX - x) / scale
-		newLocationX = CPTDecimalAdd(plotInteractionPoint[CPTCoordinateX], newSecondLengthX);
-	}
+    // Cache old ranges
+    CPTPlotRange *oldRangeX = self.xRange;
+    CPTPlotRange *oldRangeY = self.yRange;
 
-	NSDecimal newLocationY;
-	if ( CPTDecimalGreaterThanOrEqualTo( oldRangeY.length, CPTDecimalFromInteger(0) ) ) {
-		NSDecimal oldFirstLengthY = CPTDecimalSubtract(plotInteractionPoint[CPTCoordinateY], oldRangeY.minLimit); // y - minY
-		NSDecimal newFirstLengthY = CPTDecimalDivide(oldFirstLengthY, decimalScale);                              // (y - minY) / scale
-		newLocationY = CPTDecimalSubtract(plotInteractionPoint[CPTCoordinateY], newFirstLengthY);
-	}
-	else {
-		NSDecimal oldSecondLengthY = CPTDecimalSubtract(oldRangeY.maxLimit, plotInteractionPoint[1]); // maxY - y
-		NSDecimal newSecondLengthY = CPTDecimalDivide(oldSecondLengthY, decimalScale);                // (maxY - y) / scale
-		newLocationY = CPTDecimalAdd(plotInteractionPoint[CPTCoordinateY], newSecondLengthY);
-	}
+    // Lengths are scaled by the pinch gesture inverse proportional
+    NSDecimal newLengthX = CPTDecimalDivide(oldRangeX.length, decimalScale);
+    NSDecimal newLengthY = CPTDecimalDivide(oldRangeY.length, decimalScale);
 
-	// New ranges
-	CPTPlotRange *newRangeX = [[[CPTPlotRange alloc] initWithLocation:newLocationX length:newLengthX] autorelease];
-	CPTPlotRange *newRangeY = [[[CPTPlotRange alloc] initWithLocation:newLocationY length:newLengthY] autorelease];
+    // New locations
+    NSDecimal newLocationX;
+    if ( CPTDecimalGreaterThanOrEqualTo( oldRangeX.length, CPTDecimalFromInteger(0) ) ) {
+        NSDecimal oldFirstLengthX = CPTDecimalSubtract(plotInteractionPoint[CPTCoordinateX], oldRangeX.minLimit); // x - minX
+        NSDecimal newFirstLengthX = CPTDecimalDivide(oldFirstLengthX, decimalScale);                              // (x - minX) / scale
+        newLocationX = CPTDecimalSubtract(plotInteractionPoint[CPTCoordinateX], newFirstLengthX);
+    }
+    else {
+        NSDecimal oldSecondLengthX = CPTDecimalSubtract(oldRangeX.maxLimit, plotInteractionPoint[0]); // maxX - x
+        NSDecimal newSecondLengthX = CPTDecimalDivide(oldSecondLengthX, decimalScale);                // (maxX - x) / scale
+        newLocationX = CPTDecimalAdd(plotInteractionPoint[CPTCoordinateX], newSecondLengthX);
+    }
 
-	// Delegate may still veto/modify the range
-	if ( [self.delegate respondsToSelector:@selector(plotSpace:willChangePlotRangeTo:forCoordinate:)] ) {
-		newRangeX = [self.delegate plotSpace:self willChangePlotRangeTo:newRangeX forCoordinate:CPTCoordinateX];
-		newRangeY = [self.delegate plotSpace:self willChangePlotRangeTo:newRangeY forCoordinate:CPTCoordinateY];
-	}
+    NSDecimal newLocationY;
+    if ( CPTDecimalGreaterThanOrEqualTo( oldRangeY.length, CPTDecimalFromInteger(0) ) ) {
+        NSDecimal oldFirstLengthY = CPTDecimalSubtract(plotInteractionPoint[CPTCoordinateY], oldRangeY.minLimit); // y - minY
+        NSDecimal newFirstLengthY = CPTDecimalDivide(oldFirstLengthY, decimalScale);                              // (y - minY) / scale
+        newLocationY = CPTDecimalSubtract(plotInteractionPoint[CPTCoordinateY], newFirstLengthY);
+    }
+    else {
+        NSDecimal oldSecondLengthY = CPTDecimalSubtract(oldRangeY.maxLimit, plotInteractionPoint[1]); // maxY - y
+        NSDecimal newSecondLengthY = CPTDecimalDivide(oldSecondLengthY, decimalScale);                // (maxY - y) / scale
+        newLocationY = CPTDecimalAdd(plotInteractionPoint[CPTCoordinateY], newSecondLengthY);
+    }
 
-	self.xRange = newRangeX;
-	self.yRange = newRangeY;
+    // New ranges
+    CPTPlotRange *newRangeX = [[[CPTPlotRange alloc] initWithLocation:newLocationX length:newLengthX] autorelease];
+    CPTPlotRange *newRangeY = [[[CPTPlotRange alloc] initWithLocation:newLocationY length:newLengthY] autorelease];
+
+    // Delegate may still veto/modify the range
+    if ( [theDelegate respondsToSelector:@selector(plotSpace:willChangePlotRangeTo:forCoordinate:)] ) {
+        newRangeX = [theDelegate plotSpace:self willChangePlotRangeTo:newRangeX forCoordinate:CPTCoordinateX];
+        newRangeY = [theDelegate plotSpace:self willChangePlotRangeTo:newRangeY forCoordinate:CPTCoordinateY];
+    }
+
+    self.xRange = newRangeX;
+    self.yRange = newRangeY;
 }
 
-///	@endcond
+/// @endcond
 
 #pragma mark -
 #pragma mark Interaction
 
-///	@name User Interaction
-///	@{
+/// @name User Interaction
+/// @{
 
 /**
- *	@brief Informs the receiver that the user has
- *	@if MacOnly pressed the mouse button. @endif
- *	@if iOSOnly touched the screen. @endif
+ *  @brief Informs the receiver that the user has
+ *  @if MacOnly pressed the mouse button. @endif
+ *  @if iOSOnly touched the screen. @endif
  *
  *
- *	If the receiver has a @link CPTPlotSpace::delegate delegate @endlink and the delegate handles the event,
- *	this method always returns <code>YES</code>.
- *	If @link CPTPlotSpace::allowsUserInteraction allowsUserInteraction @endlink is <code>NO</code>
- *	or the graph does not have a @link CPTGraph::plotAreaFrame plotAreaFrame @endlink layer,
- *	this method always returns <code>NO</code>.
- *	Otherwise, if the <code>interactionPoint</code> is within the bounds of the
- *	@link CPTGraph::plotAreaFrame plotAreaFrame @endlink, a drag operation starts and
- *	this method returns <code>YES</code>.
+ *  If the receiver has a @ref delegate and the delegate handles the event,
+ *  this method always returns @YES.
+ *  If @ref allowsUserInteraction is @NO
+ *  or the graph does not have a @link CPTPlotAreaFrame::plotArea plotArea @endlink layer,
+ *  this method always returns @NO.
+ *  Otherwise, if the @par{interactionPoint} is within the bounds of the
+ *  @link CPTPlotAreaFrame::plotArea plotArea @endlink, a drag operation starts and
+ *  this method returns @YES.
  *
- *	@param event The OS event.
- *	@param interactionPoint The coordinates of the interaction.
+ *  @param event The OS event.
+ *  @param interactionPoint The coordinates of the interaction.
  *  @return Whether the event was handled or not.
  **/
--(BOOL)pointingDeviceDownEvent:(id)event atPoint:(CGPoint)interactionPoint
+-(BOOL)pointingDeviceDownEvent:(CPTNativeEvent *)event atPoint:(CGPoint)interactionPoint
 {
-	BOOL handledByDelegate = [super pointingDeviceDownEvent:event atPoint:interactionPoint];
+    BOOL handledByDelegate = [super pointingDeviceDownEvent:event atPoint:interactionPoint];
 
-	if ( handledByDelegate ) {
-		return YES;
-	}
+    if ( handledByDelegate ) {
+        isDragging = NO;
+        return YES;
+    }
 
-	if ( !self.allowsUserInteraction || !self.graph.plotAreaFrame ) {
-		return NO;
-	}
+    CPTPlotArea *plotArea = self.graph.plotAreaFrame.plotArea;
+    if ( !self.allowsUserInteraction || !plotArea ) {
+        return NO;
+    }
 
-	CGPoint pointInPlotArea = [self.graph convertPoint:interactionPoint toLayer:self.graph.plotAreaFrame];
-	if ( [self.graph.plotAreaFrame containsPoint:pointInPlotArea] ) {
-		// Handle event
-		lastDragPoint = pointInPlotArea;
-		isDragging	  = YES;
-		return YES;
-	}
+    CGPoint pointInPlotArea = [self.graph convertPoint:interactionPoint toLayer:plotArea];
+    if ( [plotArea containsPoint:pointInPlotArea] ) {
+        // Handle event
+        lastDragPoint = pointInPlotArea;
+        isDragging    = YES;
+        return YES;
+    }
 
-	return NO;
+    return NO;
 }
 
 /**
- *	@brief Informs the receiver that the user has
- *	@if MacOnly released the mouse button. @endif
- *	@if iOSOnly lifted their finger off the screen. @endif
+ *  @brief Informs the receiver that the user has
+ *  @if MacOnly released the mouse button. @endif
+ *  @if iOSOnly lifted their finger off the screen. @endif
  *
  *
- *	If the receiver has a @link CPTPlotSpace::delegate delegate @endlink and the delegate handles the event,
- *	this method always returns <code>YES</code>.
- *	If @link CPTPlotSpace::allowsUserInteraction allowsUserInteraction @endlink is <code>NO</code>
- *	or the graph does not have a @link CPTGraph::plotAreaFrame plotAreaFrame @endlink layer,
- *	this method always returns <code>NO</code>.
- *	Otherwise, if a drag operation is in progress, it ends and
- *	this method returns <code>YES</code>.
+ *  If the receiver has a @ref delegate and the delegate handles the event,
+ *  this method always returns @YES.
+ *  If @ref allowsUserInteraction is @NO
+ *  or the graph does not have a @link CPTPlotAreaFrame::plotArea plotArea @endlink layer,
+ *  this method always returns @NO.
+ *  Otherwise, if a drag operation is in progress, it ends and
+ *  this method returns @YES.
  *
- *	@param event The OS event.
- *	@param interactionPoint The coordinates of the interaction.
+ *  @param event The OS event.
+ *  @param interactionPoint The coordinates of the interaction.
  *  @return Whether the event was handled or not.
  **/
--(BOOL)pointingDeviceUpEvent:(id)event atPoint:(CGPoint)interactionPoint
+-(BOOL)pointingDeviceUpEvent:(CPTNativeEvent *)event atPoint:(CGPoint)interactionPoint
 {
-	BOOL handledByDelegate = [super pointingDeviceUpEvent:event atPoint:interactionPoint];
+    BOOL handledByDelegate = [super pointingDeviceUpEvent:event atPoint:interactionPoint];
 
-	if ( handledByDelegate ) {
-		return YES;
-	}
+    if ( handledByDelegate ) {
+        return YES;
+    }
 
-	if ( !self.allowsUserInteraction || !self.graph.plotAreaFrame ) {
-		return NO;
-	}
+    if ( !self.allowsUserInteraction || !self.graph.plotAreaFrame.plotArea ) {
+        return NO;
+    }
 
-	if ( isDragging ) {
-		isDragging = NO;
-		return YES;
-	}
+    if ( isDragging ) {
+        isDragging = NO;
+        return YES;
+    }
 
-	return NO;
+    return NO;
 }
 
 /**
- *	@brief Informs the receiver that the user has moved
- *	@if MacOnly the mouse with the button pressed. @endif
- *	@if iOSOnly their finger while touching the screen. @endif
+ *  @brief Informs the receiver that the user has moved
+ *  @if MacOnly the mouse with the button pressed. @endif
+ *  @if iOSOnly their finger while touching the screen. @endif
  *
  *
- *	If the receiver has a @link CPTPlotSpace::delegate delegate @endlink and the delegate handles the event,
- *	this method always returns <code>YES</code>.
- *	If @link CPTPlotSpace::allowsUserInteraction allowsUserInteraction @endlink is <code>NO</code>
- *	or the graph does not have a @link CPTGraph::plotAreaFrame plotAreaFrame @endlink layer,
- *	this method always returns <code>NO</code>.
- *	Otherwise, if a drag operation is in progress, the @link CPTXYPlotSpace::xRange xRange @endlink
- *	and @link CPTXYPlotSpace::yRange yRange @endlink are shifted to follow the drag and
- *	this method returns <code>YES</code>.
+ *  If the receiver has a @ref delegate and the delegate handles the event,
+ *  this method always returns @YES.
+ *  If @ref allowsUserInteraction is @NO
+ *  or the graph does not have a @link CPTPlotAreaFrame::plotArea plotArea @endlink layer,
+ *  this method always returns @NO.
+ *  Otherwise, if a drag operation is in progress, the @ref xRange
+ *  and @ref yRange are shifted to follow the drag and
+ *  this method returns @YES.
  *
- *	@param event The OS event.
- *	@param interactionPoint The coordinates of the interaction.
+ *  @param event The OS event.
+ *  @param interactionPoint The coordinates of the interaction.
  *  @return Whether the event was handled or not.
  **/
--(BOOL)pointingDeviceDraggedEvent:(id)event atPoint:(CGPoint)interactionPoint
+-(BOOL)pointingDeviceDraggedEvent:(CPTNativeEvent *)event atPoint:(CGPoint)interactionPoint
 {
-	BOOL handledByDelegate = [super pointingDeviceDraggedEvent:event atPoint:interactionPoint];
+    BOOL handledByDelegate = [super pointingDeviceDraggedEvent:event atPoint:interactionPoint];
 
-	if ( handledByDelegate ) {
-		return YES;
-	}
+    if ( handledByDelegate ) {
+        return YES;
+    }
 
-	if ( !self.allowsUserInteraction || !self.graph.plotAreaFrame ) {
-		return NO;
-	}
+    CPTPlotArea *plotArea = self.graph.plotAreaFrame.plotArea;
+    if ( !self.allowsUserInteraction || !plotArea ) {
+        return NO;
+    }
 
-	if ( isDragging ) {
-		CGPoint pointInPlotArea = [self.graph convertPoint:interactionPoint toLayer:self.graph.plotAreaFrame];
-		CGPoint displacement	= CGPointMake(pointInPlotArea.x - lastDragPoint.x, pointInPlotArea.y - lastDragPoint.y);
-		CGPoint pointToUse		= pointInPlotArea;
+    if ( isDragging ) {
+        CGPoint pointInPlotArea = [self.graph convertPoint:interactionPoint toLayer:plotArea];
+        CGPoint displacement    = CPTPointMake(pointInPlotArea.x - lastDragPoint.x, pointInPlotArea.y - lastDragPoint.y);
+        CGPoint pointToUse      = pointInPlotArea;
 
-		// Allow delegate to override
-		if ( [self.delegate respondsToSelector:@selector(plotSpace:willDisplaceBy:)] ) {
-			displacement = [self.delegate plotSpace:self willDisplaceBy:displacement];
-			pointToUse	 = CGPointMake(lastDragPoint.x + displacement.x, lastDragPoint.y + displacement.y);
-		}
+        id<CPTPlotSpaceDelegate> theDelegate = self.delegate;
 
-		NSDecimal lastPoint[2], newPoint[2];
-		[self plotPoint:lastPoint forPlotAreaViewPoint:lastDragPoint];
-		[self plotPoint:newPoint forPlotAreaViewPoint:pointToUse];
+        // Allow delegate to override
+        if ( [theDelegate respondsToSelector:@selector(plotSpace:willDisplaceBy:)] ) {
+            displacement = [theDelegate plotSpace:self willDisplaceBy:displacement];
+            pointToUse   = CPTPointMake(lastDragPoint.x + displacement.x, lastDragPoint.y + displacement.y);
+        }
 
-		CPTMutablePlotRange *newRangeX = [[self.xRange mutableCopy] autorelease];
-		CPTMutablePlotRange *newRangeY = [[self.yRange mutableCopy] autorelease];
+        NSDecimal lastPoint[2], newPoint[2];
+        [self plotPoint:lastPoint forPlotAreaViewPoint:lastDragPoint];
+        [self plotPoint:newPoint forPlotAreaViewPoint:pointToUse];
 
-		NSDecimal shiftX = CPTDecimalSubtract(lastPoint[0], newPoint[0]);
-		NSDecimal shiftY = CPTDecimalSubtract(lastPoint[1], newPoint[1]);
-		newRangeX.location = CPTDecimalAdd(newRangeX.location, shiftX);
-		newRangeY.location = CPTDecimalAdd(newRangeY.location, shiftY);
+        CPTMutablePlotRange *newRangeX = [[self.xRange mutableCopy] autorelease];
+        CPTMutablePlotRange *newRangeY = [[self.yRange mutableCopy] autorelease];
 
-		// Delegate override
-		if ( [self.delegate respondsToSelector:@selector(plotSpace:willChangePlotRangeTo:forCoordinate:)] ) {
-			self.xRange = [self.delegate plotSpace:self willChangePlotRangeTo:newRangeX forCoordinate:CPTCoordinateX];
-			self.yRange = [self.delegate plotSpace:self willChangePlotRangeTo:newRangeY forCoordinate:CPTCoordinateY];
-		}
-		else {
-			self.xRange = newRangeX;
-			self.yRange = newRangeY;
-		}
+        NSDecimal shiftX = CPTDecimalSubtract(lastPoint[0], newPoint[0]);
+        NSDecimal shiftY = CPTDecimalSubtract(lastPoint[1], newPoint[1]);
+        newRangeX.location = CPTDecimalAdd(newRangeX.location, shiftX);
+        newRangeY.location = CPTDecimalAdd(newRangeY.location, shiftY);
 
-		lastDragPoint = pointInPlotArea;
+        CPTPlotRange *globalX = self.globalXRange;
+        if ( globalX ) {
+            newRangeX = (CPTMutablePlotRange *)[self constrainRange:newRangeX toGlobalRange:globalX];
+        }
+        CPTPlotRange *globalY = self.globalYRange;
+        if ( globalY ) {
+            newRangeY = (CPTMutablePlotRange *)[self constrainRange:newRangeY toGlobalRange:globalY];
+        }
 
-		return YES;
-	}
+        // Delegate override
+        if ( [theDelegate respondsToSelector:@selector(plotSpace:willChangePlotRangeTo:forCoordinate:)] ) {
+            self.xRange = [theDelegate plotSpace:self willChangePlotRangeTo:newRangeX forCoordinate:CPTCoordinateX];
+            self.yRange = [theDelegate plotSpace:self willChangePlotRangeTo:newRangeY forCoordinate:CPTCoordinateY];
+        }
+        else {
+            self.xRange = newRangeX;
+            self.yRange = newRangeY;
+        }
 
-	return NO;
+        lastDragPoint = pointInPlotArea;
+
+        return YES;
+    }
+
+    return NO;
 }
 
-///	@}
+/// @}
 
 @end

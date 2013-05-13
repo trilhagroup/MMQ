@@ -1,9 +1,6 @@
-#import <Foundation/Foundation.h>
-#import <QuartzCore/QuartzCore.h>
-
 @interface CPTColor : NSObject<NSCopying, NSCoding> {
-	@private
-	CGColorRef cgColor;
+    @private
+    CGColorRef cgColor;
 }
 
 @property (nonatomic, readonly, assign) CGColorRef cgColor;
@@ -29,7 +26,7 @@
 +(CPTColor *)colorWithCGColor:(CGColorRef)newCGColor;
 +(CPTColor *)colorWithComponentRed:(CGFloat)red green:(CGFloat)green blue:(CGFloat)blue alpha:(CGFloat)alpha;
 +(CPTColor *)colorWithGenericGray:(CGFloat)gray;
-///	@}
+/// @}
 
 /// @name Initialization
 /// @{
@@ -37,6 +34,6 @@
 -(id)initWithComponentRed:(CGFloat)red green:(CGFloat)green blue:(CGFloat)blue alpha:(CGFloat)alpha;
 
 -(CPTColor *)colorWithAlphaComponent:(CGFloat)alpha;
-///	@}
+/// @}
 
 @end

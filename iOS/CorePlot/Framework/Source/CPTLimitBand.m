@@ -4,16 +4,16 @@
 #import "CPTPlotRange.h"
 
 /**
- *	@brief Defines a range and fill used to highlight a band of data.
+ *  @brief Defines a range and fill used to highlight a band of data.
  **/
 @implementation CPTLimitBand
 
-/** @property range
+/** @property CPTPlotRange *range
  *  @brief The data range for the band.
  **/
 @synthesize range;
 
-/** @property fill
+/** @property CPTFill *fill
  *  @brief The fill used to draw the band.
  **/
 @synthesize fill;
@@ -28,7 +28,7 @@
  **/
 +(CPTLimitBand *)limitBandWithRange:(CPTPlotRange *)newRange fill:(CPTFill *)newFill
 {
-	return [[[CPTLimitBand alloc] initWithRange:newRange fill:newFill] autorelease];
+    return [[[CPTLimitBand alloc] initWithRange:newRange fill:newFill] autorelease];
 }
 
 /** @brief Initializes a newly allocated CPTLimitBand object with the provided range and fill.
@@ -38,72 +38,88 @@
  **/
 -(id)initWithRange:(CPTPlotRange *)newRange fill:(CPTFill *)newFill
 {
-	if ( (self = [super init]) ) {
-		range = [newRange retain];
-		fill  = [newFill retain];
-	}
-	return self;
+    if ( (self = [super init]) ) {
+        range = [newRange retain];
+        fill  = [newFill retain];
+    }
+    return self;
 }
+
+/// @cond
 
 -(void)dealloc
 {
-	[range release];
-	[fill release];
-	[super dealloc];
+    [range release];
+    [fill release];
+    [super dealloc];
 }
 
+/// @endcond
+
 #pragma mark -
-#pragma mark NSCopying
+#pragma mark NSCopying Methods
+
+/// @cond
 
 -(id)copyWithZone:(NSZone *)zone
 {
-	CPTLimitBand *newBand = [[CPTLimitBand allocWithZone:zone] init];
+    CPTLimitBand *newBand = [[CPTLimitBand allocWithZone:zone] init];
 
-	if ( newBand ) {
-		newBand->range = [self->range copyWithZone:zone];
-		newBand->fill  = [self->fill copyWithZone:zone];
-	}
-	return newBand;
+    if ( newBand ) {
+        newBand->range = [self->range copyWithZone:zone];
+        newBand->fill  = [self->fill copyWithZone:zone];
+    }
+    return newBand;
 }
 
+/// @endcond
+
 #pragma mark -
-#pragma mark NSCoding
+#pragma mark NSCoding Methods
+
+/// @cond
 
 -(void)encodeWithCoder:(NSCoder *)encoder
 {
-	if ( [encoder allowsKeyedCoding] ) {
-		[encoder encodeObject:range forKey:@"CPTLimitBand.range"];
-		[encoder encodeObject:fill forKey:@"CPTLimitBand.fill"];
-	}
-	else {
-		[encoder encodeObject:range];
-		[encoder encodeObject:fill];
-	}
+    if ( [encoder allowsKeyedCoding] ) {
+        [encoder encodeObject:range forKey:@"CPTLimitBand.range"];
+        [encoder encodeObject:fill forKey:@"CPTLimitBand.fill"];
+    }
+    else {
+        [encoder encodeObject:range];
+        [encoder encodeObject:fill];
+    }
 }
 
 -(id)initWithCoder:(NSCoder *)decoder
 {
-	CPTPlotRange *newRange;
-	CPTFill *newFill;
+    CPTPlotRange *newRange;
+    CPTFill *newFill;
 
-	if ( [decoder allowsKeyedCoding] ) {
-		newRange = [decoder decodeObjectForKey:@"CPTLimitBand.range"];
-		newFill	 = [decoder decodeObjectForKey:@"CPTLimitBand.fill"];
-	}
-	else {
-		newRange = [decoder decodeObject];
-		newFill	 = [decoder decodeObject];
-	}
+    if ( [decoder allowsKeyedCoding] ) {
+        newRange = [decoder decodeObjectForKey:@"CPTLimitBand.range"];
+        newFill  = [decoder decodeObjectForKey:@"CPTLimitBand.fill"];
+    }
+    else {
+        newRange = [decoder decodeObject];
+        newFill  = [decoder decodeObject];
+    }
 
-	return [self initWithRange:newRange fill:newFill];
+    return [self initWithRange:newRange fill:newFill];
 }
+
+/// @endcond
 
 #pragma mark -
 #pragma mark Description
 
+/// @cond
+
 -(NSString *)description
 {
-	return [NSString stringWithFormat:@"<%@ with range: %@ and fill: %@>", [super description], self.range, self.fill];
+    return [NSString stringWithFormat:@"<%@ with range: %@ and fill: %@>", [super description], self.range, self.fill];
 }
+
+/// @endcond
 
 @end

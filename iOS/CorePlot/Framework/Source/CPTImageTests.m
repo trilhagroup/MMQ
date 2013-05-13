@@ -4,24 +4,29 @@
 @implementation CPTImageTests
 
 #pragma mark -
-#pragma mark NSCoding
+#pragma mark NSCoding Methods
 
 -(void)testKeyedArchivingRoundTrip
 {
-	CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-	CGImageRef cgImage		   = CGImageCreate(100, 100, 8, 32, 400, colorSpace, kCGBitmapAlphaInfoMask, NULL, NULL, YES, kCGRenderingIntentDefault);
+    const size_t width  = 100;
+    const size_t height = 100;
 
-	CPTImage *image = [CPTImage imageWithCGImage:cgImage];
+    size_t bytesPerRow         = (4 * width + 15) & ~15ul;
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB);
+    CGContextRef context       = CGBitmapContextCreate(NULL, width, height, 8, bytesPerRow, colorSpace, kCGImageAlphaNoneSkipLast);
+    CGImageRef cgImage         = CGBitmapContextCreateImage(context);
 
-	image.tiled					= YES;
-	image.tileAnchoredToContext = YES;
+    CPTImage *image = [CPTImage imageWithCGImage:cgImage];
 
-	CGColorSpaceRelease(colorSpace);
-	CGImageRelease(cgImage);
+    image.tiled                 = YES;
+    image.tileAnchoredToContext = YES;
 
-	CPTImage *newImage = [NSKeyedUnarchiver unarchiveObjectWithData:[NSKeyedArchiver archivedDataWithRootObject:image]];
+    CGColorSpaceRelease(colorSpace);
+    CGImageRelease(cgImage);
 
-	STAssertEqualObjects(image, newImage, @"Images not equal");
+    CPTImage *newImage = [NSKeyedUnarchiver unarchiveObjectWithData:[NSKeyedArchiver archivedDataWithRootObject:image]];
+
+    STAssertEqualObjects(image, newImage, @"Images not equal");
 }
 
 @end
